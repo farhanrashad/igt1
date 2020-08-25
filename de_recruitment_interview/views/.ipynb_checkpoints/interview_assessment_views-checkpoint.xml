@@ -157,6 +157,9 @@
                                         </field>
                                     </tree>    
                                 </group>
+<!--                                 <group>
+                                    <field name="scope_total"/>
+                                </group> -->
                                 <group>
                                 <group>
                                     <field name="strength"/>

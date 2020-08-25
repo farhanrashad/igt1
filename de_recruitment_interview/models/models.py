@@ -64,6 +64,19 @@ class EmployeeInterviewAssessment(models.Model):
     interviewer_id = fields.Many2one('res.users', string='INTERVIEWER', store=True)
     date = fields.Date(string='Date', store=True)   
     assessment_ds = fields.One2many('hr.employee.interview.assessment.line', 'interview_id',)
+#     scope_total = fields.Monetary(string='Total Scope', store=True, readonly=True, compute='_amount_all') 
+#     currency_id = fields.Many2one('res.currency', 'Currency')
+    
+#     @api.depends('assessment_ds.scope')
+#     def _amount_all(self):
+#         for order in self:
+#             amount_untaxed = amount_tax = 0.0
+#             for line in order.assessment_ds:
+#                 amount_untaxed += line.scope
+#         order.update({
+#             'amount_untaxed': order.currency_id.round(amount_untaxed),
+#             'scope_total': amount_untaxed
+#             })
 
 
     
@@ -74,12 +87,12 @@ class EmployeeInterviewAssessment(models.Model):
 
         interview_id = fields.Many2one('hr.employee.interview.assessment', string='Interview', store=True)
         name = fields.Char(string='Criteria',  copy=False,  index=True)
-        scope = fields.Float(string='Scope (1-5)', store=True, size=5)
+        scope = fields.Float(string='Scope (1-5)', store=True)
         remarks = fields.Char(string='Remarks', store=True)
         
         @api.constrains('scope')
         def _check_value(self):
-            if self.scope > 0.0 or self.field_name <= 5.0:
+            if self.scope < 0.0 or self.scope > 5.0:
                 raise ValidationError(_('Enter Scope Value Between 0-5.'))
     
 #     @api.model
