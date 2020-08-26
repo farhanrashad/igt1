@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['hr','report_xlsx'],
+    'depends': ['hr','report_xlsx','hr_attendance'],
 
     # always loaded
     'data': [
