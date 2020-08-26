@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_recruitment_probation_period_form_wizard" model="ir.ui.view">
+            <field name="name">hr.recruitment.probation.period.review.wizard</field>
+            <field name="model">employee.probation.wizard</field>
+            <field name="arch" type="xml">
+                <form string="hr.recruitment.probation.period.form.view">
+                    <group>
+                        <field name="add_review"></field>
+                    </group>
+                    <footer>
+						<button name="send_review" type="object" string="Send Review" class="oe_highlight" />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record model="ir.actions.act_window" id="action_recruitment_probation_period_form_wizard">
+            <field name="name">Add Review</field>
+            <field name="type">ir.actions.act_window</field>
+	        <field name="res_model">employee.probation.wizard</field>
+	        <field name="view_mode">form</field>
+            <field name="view_id" ref="hr_recruitment_probation_period_form_wizard"/>
+            <field name="target">new</field>
+
+
+
+        </record>
+    </data>
+</odoo>
