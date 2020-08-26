@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_hr_employee_work_experience,access.hr.employee.work.experience,model_hr_employee_work_experience,,1,1,1,1
+
+access_hr_employee_skill,access.hr.employee.skill,model_hr_employee_skill,,1,1,1,1
+
+access_hr_employee_language,access.hr.employee.language,model_hr_employee_language,,1,1,1,1
+
+access_hr_employee_education,access.hr.employee.education,model_hr_employee_education,,1,1,1,1
+
+access_hr_employee_license,access.hr.employee.license,model_hr_employee_license,,1,1,1,1
+
+access_hr_employee_attachment,access.hr.employee.attachment,model_hr_employee_attachment,,1,1,1,1
+
+access_hr_employee_family,access.hr.employee.family,model_hr_employee_family,,1,1,1,1
+
