@@ -33,7 +33,7 @@
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_tree"/>
         <field name="arch" type="xml">
-            <field name="message_needaction" position="after">
+            <field name="department_id" position="after">
                 <field name="entry_progress" widget="progressbar"/>
             </field>
         </field>
