@@ -10,7 +10,8 @@
 					<group>
 
 						<group>
-							<field name="current_date" />
+							<field name="current_date" attrs="{'invisible':[('print_by', '=','monthly')]}" />
+							<field name="month" attrs="{'invisible':[('print_by', '!=', 'monthly')]}"/>
 							<field name="print_by" widget="radio"/>
 							<field name="all_emp" />
 							<field name="employee" widget="many2many_tags" attrs="{'invisible':[('all_emp', '!=', False)]}"  />
