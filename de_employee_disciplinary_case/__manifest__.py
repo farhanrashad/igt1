@@ -1,39 +1,29 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Employee Desciplinary Case",
+    'name': "de_employee_disciplinary_case",
 
     'summary': """
-         Employee Desciplinary Case
-         1-This module depends on Employee app
-         """,
+        Short (1 phrase/line) summary of the module's purpose, used as
+        subtitle on modules listing or apps.openerp.com""",
 
     'description': """
         Long description of module's purpose
     """,
 
-    'author': "Dynexcel",
-    'website': "http://www.dynexcel.com",
+    'author': "Dynexcel || Rai Muhammad Kashif",
+    'website': "http://www.yourcompany.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Employee',
+    'category': 'Uncategorized',
     'version': '0.1',
 
-    # any module necessary for this one to work correctly
-    'depends': ['base','hr','mail'],
+    'depends': ['base'],
 
     # always loaded
     'data': [
-        'report/disciplinary_case_report.xml',
-        'report/disciplinary_case_template.xml',
-        'data/desciplinary_case_seq.xml',
-        'data/mail_template_data.xml',
         'security/ir.model.access.csv',
-        'views/desciplinary_case_views.xml',
-        'views/templates.xml',
+        'views/offence.xml',
+        'views/notice.xml',
     ],
-    # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
