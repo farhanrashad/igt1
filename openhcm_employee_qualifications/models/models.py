@@ -9,9 +9,7 @@ class HrEmployee(models.Model):
     # foreign key concept
     experience_lines = fields.One2many('hr.employee.work.experience', 'experience_id', string='Employee Experince line',copy=True, auto_join=True)
 
-    skill_lines = fields.One2many('hr.employee.skill', 'skill_id', string='Employee skill line',
-
-                                       copy=True, auto_join=True)
+    skill_lines = fields.One2many('hr.employee.skill', 'skill_id', string='Employee skill line',copy=True, auto_join=True)
 
     language_lines = fields.One2many('hr.employee.language', 'language_id', string='Employee language line',
 
@@ -42,12 +40,12 @@ class HrEmployee(models.Model):
 class HrEmployeeWorkExperience(models.Model):
     _name = 'hr.employee.work.experience'
     _description = 'Work'
-    company = fields.Char(string='company', store=True, required=True)
+    company = fields.Char(string='Company', store=True, required=True)
     job_title = fields.Char(string='Job Title', store=True)
-    From = fields.Integer(string='from', store=True)
-    To = fields.Integer(string='To', store=True, required=True)
+    From = fields.Date(string='From')
+    To = fields.Date(string='To')
     comments = fields.Text(string="Comments")
-    experience_id = fields.Many2one('hr.employee', string='experience id', index=True, required=True,
+    experience_id = fields.Many2one('hr.employee', string='Experience Id', index=True, required=True,
                                           ondelete='cascade')
 
 class HrEmployeeSkill(models.Model):
@@ -56,7 +54,7 @@ class HrEmployeeSkill(models.Model):
     skill_id = fields.Many2one('hr.employee', string='skill',index=True, required=True,
                                           ondelete='cascade')
     skill = fields.Char(string='Skill', store=True, required=True)
-    years_of_experience = fields.Float(string='years of experience', type="float", store=True, required=True)
+    years_of_experience = fields.Float(string='Years Of Experience', type="float", store=True, required=True)
 
 # language select option
 language_fluency_choices = (
@@ -80,7 +78,13 @@ class HrEmployeeEducation(models.Model):
     _description = 'Employee Education'
     education_id = fields.Many2one('hr.employee', string='education_id',index=True, required=True,
                                           ondelete='cascade')
-    level = fields.Char(string='Level', store=True, required=True)
+    level = fields.Selection([('shs', 'Some High School'),
+                              ('hsd', 'High School Diploma/GED'),
+                              ('sc', 'Some College'),
+                              ('ad', ' Associate Degree'),
+                              ("bd", "Bachelor's Degree"),
+                              ('md', "Master's Degree Or Higher")],
+                              default='bd')
     year = fields.Char(string='Year', store=True, required=True)
     cgpa_score = fields.Char(string='CGPA/Score', store=True, required=True)
 
@@ -108,37 +112,35 @@ class HrEmployeeFamily(models.Model):
     family_id = fields.Many2one('hr.employee', string='family_id',index=True, required=True,
                                           ondelete='cascade')
     family_Owner = fields.Char(string='Owner Name', store=True, required=True)
-    Totalmember = fields.Char(string='total member', store=True, required=True)
+    Totalmember = fields.Char(string='total Member', store=True, required=True)
 
-class HrEmployeeFamily(models.Model):
-    _name = 'hr.employee.family'
-    _description = 'Employee family'
-    family_id = fields.Many2one('hr.employee', string='family_id',index=True, required=True,
-                                          ondelete='cascade')
-    family_Owner = fields.Char(string='Owner Name', store=True, required=True)
-    Totalmember = fields.Char(string='total member', store=True, required=True)
 
 class HrEmployeeDependent(models.Model):
     _name = 'hr.employee.dependent'
     _description = 'Employee Dependent'
-    dependent_id = fields.Many2one('hr.employee', string='dependent id',index=True, required=True,
+    dependent_id = fields.Many2one('hr.employee', string='Dependent Id',index=True, required=True,
                                           ondelete='cascade')
     name = fields.Char(string='Name', store=True, required=True)
-    date_Of_birth = fields.Date(string='Date Of Birth', store=True, required=True)
-    relationship = fields.Char(string='Relationship', store=True, required=True)
+    date_Of_birth = fields.Date(string='DOB', store=True, required=True)
+    relationship = fields.Selection([('parent', 'Parent'),
+                              ('gparent', 'Grand Parent'),
+                              ('sib', 'Sibling'),
+                              ('husb', 'Husband'),
+                              ("wife", "Wife")],
+                             default='parent')
 
 class HrEmployeeContactDetail(models.Model):
     _name = 'hr.employee.contact.detail'
     _description = 'Employee contact'
-    contact_id = fields.Many2one('hr.employee', string='contact detail',index=True, required=True,
+    contact_id = fields.Many2one('hr.employee', string='Contact Detail',index=True, required=True,
                                           ondelete='cascade')
     adress_stree_1 = fields.Text(string='Address', store=True, required=True)
     state = fields.Many2one("res.country.state", string='State', help='Enter State', ondelete='restrict')
     country = fields.Many2one('res.country', string='Country', help='Select Country', ondelete='restrict')
     city = fields.Char(string='Mobile Number', store=True, required=True)
-    zip_code = fields.Char(string='zip/postal code', store=True, required=True)
+    zip_code = fields.Char(string='Zip/Postal code', store=True, required=True)
     home_Telephone = fields.Integer(string='Home Contact', store=True, required=True)
-    work_Telephone = fields.Integer(string='work Contact', store=True, required=True)
-    mobile = fields.Integer(string='Personnel Number', store=True, required=True)
+    work_Telephone = fields.Integer(string='Work Contact', store=True, required=True)
+    mobile = fields.Integer(string='Personal Number', store=True, required=True)
     work_email = fields.Char(string='Work Email', store=True, required=True)
     other_email = fields.Char(string='Other Email', store=True, required=True)

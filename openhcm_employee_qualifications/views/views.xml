@@ -68,7 +68,7 @@
 <!--					</field>-->
 <!--				 </page>-->
 
-				<page string="Employee Contact Details">
+				<page string="Contact Details">
 				<!-- 	relation id   -->
 					<field name="contact_lines">
 					<tree editable="bottom">
@@ -85,7 +85,7 @@
 				</tree>
 				</field>
 				</page>
-				<page string="Employee dependent">
+				<page string="Dependents">
 				<!-- 	relation id   -->
 					<field name="dependents_lines">
 					<tree editable="bottom">
