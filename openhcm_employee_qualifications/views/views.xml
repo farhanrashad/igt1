@@ -6,36 +6,19 @@
               <field name="inherit_id" ref="hr.view_employee_form"/>
 			<field name="arch" type="xml">
 				<xpath expr="//page[@name='hr_settings']" position='after'>
-				 <page string="Work Experience">
+				 <page string="Experience">
+					 <!--	relation id  -->
 					 <field name="experience_lines">
-							<tree>
+							<tree editable="bottom">
 								<field name="company"/>
-							<field name="employee_id"/>
-							<field name="job_title"/>
-							<field name="From"/>
-							<field name="To"/>
-							<field name="comments"/>
-							<field name="experience_id"/>
+								<field name="job_title"/>
+								<field name="From"/>
+								<field name="To"/>
+								<field name="comments"/>
 							</tree>
 					 </field>
-					<!--	relation id  -->
-					<field name="experience_lines">
-						<tree editable="bottom">
-							<control>
-								<create name="add_line_control" string="Add a line"/>
-							</control>
-					hr		<field name="company"/>
-							<field name="employee_id"/>
-							<field name="job_title"/>
-							<field name="From"/>
-							<field name="To"/>
-							<field name="comments"/>
-							<field name="experience_id"/>
-						</tree>
-					</field>
 				 </page>
-
-                  <page string="Employee skill">
+                  <page string="Skill">
 					<!--	relation id  -->
 					<field name="skill_lines">
 						<tree editable="bottom">
@@ -44,7 +27,7 @@
 						</tree>
 					</field>
 				 </page>
-                  <page string="Employee Language">
+                  <page string="Language">
 					<!--	relation id  -->
 					<field name="language_lines">
 						<tree editable="bottom">
@@ -55,7 +38,7 @@
 						</tree>
 					</field>
 				 </page>
-				<page string="Employee Education">
+				<page string="Education">
 					<!--	relation id  -->
 					<field name="education_lines">
 						<tree editable="bottom">
@@ -65,11 +48,13 @@
 						</tree>
 					</field>
 				</page>
-				<page string="Employee License">
+				<page string="License">
 					<!--	relation id  -->
-					<field name="experience_lines">
+					<field name="license_lines">
 						<tree editable="bottom">
-							<field name="company"/>
+							<field name="license_type"/>
+							<field name="issue_date"/>
+							<field name="expiry_date"/>
 						</tree>
 					</field>
 				 </page>
@@ -82,7 +67,35 @@
 <!--						</tree>-->
 <!--					</field>-->
 <!--				 </page>-->
-				<page string="Employee attachment">
+
+				<page string="Employee Contact Details">
+				<!-- 	relation id   -->
+					<field name="contact_lines">
+					<tree editable="bottom">
+					<field name="adress_stree_1"/>
+					<field name="country"/>
+					<field name="state"/>
+					<field name="city"/>
+					<field name="zip_code"/>
+					<field name="home_Telephone"/>
+					<field name="work_Telephone"/>
+					<field name="mobile"/>
+					<field name="work_email"/>
+					<field name="other_email"/>
+				</tree>
+				</field>
+				</page>
+				<page string="Employee dependent">
+				<!-- 	relation id   -->
+					<field name="dependents_lines">
+					<tree editable="bottom">
+						<field name="name"/>
+						<field name="date_Of_birth"/>
+						<field name="relationship"/>
+					</tree>
+					</field>
+				</page>
+				<page string="Attachment">
 					<!--	relation id  -->
 					<field name="attachment_lines">
 						<tree editable="bottom">
