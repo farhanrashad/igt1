@@ -14,3 +14,7 @@ access_hr_employee_attachment,access.hr.employee.attachment,model_hr_employee_at
 
 access_hr_employee_family,access.hr.employee.family,model_hr_employee_family,,1,1,1,1
 
+access_hr_employee_contact_detail,access.hr.employee.contact.detail,model_hr_employee_contact_detail,,1,1,1,1
+
+access_hr_employee_dependent,access.hr.employee.dependent,model_hr_employee_dependent,,1,1,1,1
+
