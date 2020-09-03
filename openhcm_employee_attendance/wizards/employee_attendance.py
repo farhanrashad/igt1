@@ -21,8 +21,8 @@ class EmployeeAttandanceWizard(models.Model):
     print_by = fields.Selection([('daily', 'Daily'),
                                    ('weekly', 'Weekly'),
                                  ('monthly', 'Monthly')],default="daily")
-    all_emp=fields.Boolean(string="All Employees",default=True)
-    employee=fields.Many2many('hr.employee',string="Employee",required=True)
+    all_emp=fields.Boolean(string="All Employees")
+    employee=fields.Many2many('hr.employee',string="Employee")
 
 
 

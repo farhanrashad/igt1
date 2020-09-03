@@ -14,7 +14,7 @@
 							<field name="month" attrs="{'invisible':[('print_by', '!=', 'monthly')]}"/>
 							<field name="print_by" widget="radio"/>
 							<field name="all_emp" />
-							<field name="employee" widget="many2many_tags" attrs="{'invisible':[('all_emp', '!=', False)]}"  />
+							<field name="employee" widget="many2many_tags" attrs="{'invisible':[('all_emp', '!=', False)],'required':[('all_emp', '!=',True)]}"  />
 
 						</group>
 					</group>
