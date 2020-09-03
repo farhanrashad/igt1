@@ -2,9 +2,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-import datetime
-import calendar
-
+from datetime import datetime
 
 
 class EmployeeAttandanceWizard(models.Model):
@@ -13,11 +11,7 @@ class EmployeeAttandanceWizard(models.Model):
     
     
 #     declaring attandance wizard fields
-    current_date=fields.Date(string="Date",default=datetime.datetime.today())
-    month = fields.Selection([("1", 'January'), ("2", 'February'), ("3", 'March'), ("4", 'April'),
-                              ("5", 'May'), ("6", 'June'), ("7", 'July'), ("8", 'August'),
-                              ("9", 'September'), ("10", 'October'), ("11", 'November'), ("12", 'December')],
-                             string='Month',default=str(datetime.datetime.today().month))
+    current_date=fields.Date(string="Date",default=datetime.today())
     print_by = fields.Selection([('daily', 'Daily'),
                                    ('weekly', 'Weekly'),
                                  ('monthly', 'Monthly')],default="daily")
@@ -38,20 +32,8 @@ class EmployeeAttandanceWizard(models.Model):
             self.all_emp=False
 
     def action_report_gen(self):
-        print("called action report gen----------------------------")
-        #for months report
-        year = int(datetime.datetime.today().year)
-        month = int(self.month)
-        print("month is : ",month,type(month))
-        x = calendar.monthrange(year, month)
-        print(x)
-        print(year)
-        num_days_c = x[1]
-        print(num_days_c)
-        num_days = calendar.monthrange(year, month)[1]
-        days_for_month = [str(datetime.date(year, month, day)) for day in range(1, num_days + 1)]
-        print(days_for_month)
-        #month report end
+        print("called----------------------------")
+        print("many2many emp are ",self.employee,type(self.employee))
         emp_name={}
         count=0
         for temp in self.employee:
@@ -65,7 +47,6 @@ class EmployeeAttandanceWizard(models.Model):
             'current_date': self.current_date,
             'print_by': self.print_by,
             'all_emp': self.all_emp,
-            'emp_sel':emp_name,
-            'days_for_month':days_for_month
+            'emp_sel':emp_name
         }
         return self.env.ref('openhcm_employee_attendance.emp_att_xlsx').report_action(self,data=datas)

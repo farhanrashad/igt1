@@ -20,8 +20,7 @@ class PartnerXlsx(models.AbstractModel):
                 current_date=data['current_date']
                 print_type="daily : {}".format(current_date)
                 sheet.write(6, 6,print_type,bold)
-                sheet.write(8, 3, "S. No", bold)
-                sheet.write(8, 4, "Employee", bold)
+                sheet.write(8, 4, "Employee Name", bold)
                 sheet.write(8, 6,current_date, bold)
                 sheet.write(8, 8,"Present", bold)
                 sheet.write(8, 9,"Absent", bold)
@@ -29,7 +28,6 @@ class PartnerXlsx(models.AbstractModel):
                 width=4
                 count=0
                 for emp in all_emp:
-                    sheet.write(row,3,count+1,bold)
                     sheet.write(row,width,all_emp[count].name)
                     # print(all_emp[count].id)
                     all_att = self.env['hr.attendance'].search([('employee_id', '=',all_emp[count].id)])
@@ -61,8 +59,7 @@ class PartnerXlsx(models.AbstractModel):
                 current_date = data['current_date']
                 print_type = "daily : {}".format(current_date)
                 sheet.write(6, 5, print_type, bold)
-                sheet.write(8, 3, "S.No", bold)
-                sheet.write(8, 4, "Employee", bold)
+                sheet.write(8, 4, "Employee Name", bold)
                 sheet.write(8, 6, current_date, bold)
                 sheet.write(8, 8, "Present", bold)
                 sheet.write(8, 9, "Absent", bold)
@@ -70,7 +67,6 @@ class PartnerXlsx(models.AbstractModel):
                 width = 4
                 count = 0
                 for emp in all_emp:
-                    sheet.write(row,3,count+1,bold)
                     sheet.write(row, width, all_emp[emp])
                     #body of report
                     all_att = self.env['hr.attendance'].search([('employee_id', '=',int(emp))])
@@ -99,10 +95,10 @@ class PartnerXlsx(models.AbstractModel):
                 current_date = data['current_date']
                 print_type = "Weekly : {}".format(current_date)
                 sheet.write(6, 6, print_type, bold)
-                sheet.write(8, 3, "S.No", bold)
-                sheet.write(8, 4, "Employee", bold)
+                sheet.write(8, 4, "Employee Name", bold)
                 # sheet.write(2, 2, "Employee Name", bold)
                 sheet.set_column(2,2,20)
+                sheet.write(8, 4, "Employee Name", bold)
                 # sheet.write(8, 6, current_date, bold)
                 # printing previous 7 days as weekly print type is selected
                 row=8
@@ -128,7 +124,6 @@ class PartnerXlsx(models.AbstractModel):
                 emp_present=0
                 emp_absent=0
                 for emp in all_emp:
-                    sheet.write(row,3,count+1,bold)
                     sheet.write(row, width, all_emp[count].name) #for printing name
                     # body report
                     all_att = self.env['hr.attendance'].search([('employee_id', '=', all_emp[count].id)]) #get all record of attendances at employee id
@@ -179,9 +174,10 @@ class PartnerXlsx(models.AbstractModel):
                 print_type = "Weekly : {}".format(current_date)
                 print(print_type)
                 sheet.write(6, 6, print_type, bold)
-                sheet.write(8, 3, "S.No", bold)
-                sheet.write(8, 4, "Employee", bold)                # sheet.write(2, 2, "Employee Name", bold)
+                sheet.write(8, 4, "Employee Name", bold)
+                # sheet.write(2, 2, "Employee Name", bold)
                 sheet.set_column(2, 2, 20)
+                sheet.write(8, 4, "Employee Name", bold)
                 # sheet.write(8, 6, current_date, bold)
                 # printing previous 7 days as weekly print type is selected
                 row = 8
@@ -208,7 +204,6 @@ class PartnerXlsx(models.AbstractModel):
                 emp_present = 0
                 emp_absent = 0
                 for emp in all_emp:
-                    sheet.write(row,3,count+1,bold)
                     sheet.write(row, width, all_emp[emp])# for printing name
                     # body report
                     all_att = self.env['hr.attendance'].search([('employee_id', '=',int(emp))])  # get all record of attendances at employee id
@@ -256,9 +251,10 @@ class PartnerXlsx(models.AbstractModel):
                 print_type = "Monthly : {}".format(current_date)
                 print(print_type)
                 sheet.write(6, 6, print_type, bold)
-                sheet.write(8, 3, "S.No", bold)
-                sheet.write(8, 4, "Employee", bold)                # sheet.write(2, 2, "Employee Name", bold)
+                sheet.write(8, 4, "Employee Name", bold)
+                # sheet.write(2, 2, "Employee Name", bold)
                 sheet.set_column(2, 2, 20)
+                sheet.write(8, 4, "Employee Name", bold)
                 # sheet.write(8, 6, current_date, bold)
                 # printing previous 7 days as weekly print type is selected
                 row = 8
@@ -268,23 +264,14 @@ class PartnerXlsx(models.AbstractModel):
                 date_str = current_date
                 date_object = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
                   # printed in default formatting
-                # current_date_lst = []
-                # for _ in range(week_days):
-                #     sheet.set_column(row, width, 10)
-                #     sheet.write(row, width, str(date_object - datetime.timedelta(day)), bold)
-                #     current_date_lst.append(str(date_object - datetime.timedelta(day)))
-                #     day += 1
-                #     width += 1
-                # trying to print days for months
-                current_date_lst = data['days_for_month']
-                for _ in range(len(current_date_lst)):
+                current_date_lst = []
+                for _ in range(week_days):
                     sheet.set_column(row, width, 10)
-                    sheet.write(row, width, str(current_date_lst[_]), bold)
+                    sheet.write(row, width, str(date_object - datetime.timedelta(day)), bold)
+                    current_date_lst.append(str(date_object - datetime.timedelta(day)))
                     day += 1
                     width += 1
-
                     # done printing date for 7 days previous
-                print("generate list like -----------------",current_date_lst,type(current_date_lst),type(current_date_lst[0]))
                 sheet.set_column('G:G', 20)
                 sheet.write(row, width + 1, "Present", bold)
                 sheet.write(row, width + 2, "Absent", bold)
@@ -294,7 +281,6 @@ class PartnerXlsx(models.AbstractModel):
                 emp_present = 0
                 emp_absent = 0
                 for emp in all_emp:
-                    sheet.write(row,3,count+1,bold)
                     sheet.write(row, width, all_emp[count].name)  # for printing name
                     # body report
                     all_att = self.env['hr.attendance'].search(
@@ -347,9 +333,10 @@ class PartnerXlsx(models.AbstractModel):
                 current_date = data['current_date']
                 print_type = "Monthly : {}".format(current_date)
                 sheet.write(6, 6, print_type, bold)
-                sheet.write(8, 3, "S.No", bold)
-                sheet.write(8, 4, "Employee", bold)                # sheet.write(2, 2, "Employee Name", bold)
+                sheet.write(8, 4, "Employee Name", bold)
+                # sheet.write(2, 2, "Employee Name", bold)
                 sheet.set_column(2, 2, 20)
+                sheet.write(8, 4, "Employee Name", bold)
                 # sheet.write(8, 6, current_date, bold)
                 # printing previous 30 days as monthly print type is selected
                 row = 8
@@ -359,17 +346,11 @@ class PartnerXlsx(models.AbstractModel):
                 date_str = current_date
                 date_object = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
                  # printed in default formatting
-                # current_date_lst = []
-                # for _ in range(week_days):
-                #     sheet.set_column(row, width, 10)
-                #     sheet.write(row, width, str(date_object - datetime.timedelta(day)), bold)
-                #     current_date_lst.append(str(date_object - datetime.timedelta(day)))
-                #     day += 1
-                #     width += 1
-                current_date_lst = data['days_for_month']
-                for _ in range(len(current_date_lst)):
+                current_date_lst = []
+                for _ in range(week_days):
                     sheet.set_column(row, width, 10)
-                    sheet.write(row, width, str(current_date_lst[_]), bold)
+                    sheet.write(row, width, str(date_object - datetime.timedelta(day)), bold)
+                    current_date_lst.append(str(date_object - datetime.timedelta(day)))
                     day += 1
                     width += 1
                     # done printing date for 7 days previous
@@ -382,7 +363,6 @@ class PartnerXlsx(models.AbstractModel):
                 emp_present = 0
                 emp_absent = 0
                 for emp in all_emp:
-                    sheet.write(row,3,count+1,bold)
                     sheet.write(row, width, all_emp[emp])  # for printing name
                     # body report
                     all_att = self.env['hr.attendance'].search(
@@ -422,4 +402,7 @@ class PartnerXlsx(models.AbstractModel):
                     emp_present = 0
                     emp_absent = 0
                     count = count + 1
+
+
+
 
