@@ -31,7 +31,11 @@
             <field name="model">hr.employee.disciplinary.case.type</field>
             <field name="arch" type="xml">
             <form>
-              <field name="name"/>
+                <sheet>
+                    <group>
+                       <field name="name"/>
+                    </group>
+                </sheet>
             </form>
           </field>
       </record> 
@@ -116,10 +120,10 @@
                 <form>
                     <header>
                         <button name="action_waiting_case" states="draft" string="Process" type="object"/>
-                        <button name="action_case_send" states="waiting" string="Send by Email" type="object"/>
-                        <button name="action_close_case" states="waiting,response" string="Close Case" type="object"/>
+                        <button name="action_case_send" states="wait-resp" string="Send by Email" type="object"/>
+                        <button name="action_close_case" states="wait-resp" string="Close Case" type="object"/>
 
-                        <field name="state" widget="statusbar" statusbar_visible="draft,waiting,response,close"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,wait-resp,close"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -129,22 +133,22 @@
                         </div>
                         <group>
                             <group>
-                                <field name="employee_id"/>
-                                <field name="case_type"/>
+                                <field name="employee_id" widget="selection" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
+                                <field name="case_type" widget="selection" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
                             </group>
                             <group>
-                                <field name="date"/>
-                                <field name="user_id"/>
+                                <field name="date" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
+                                <field name="user_id" widget="selection" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
                             </group>
                         </group>
                         <notebook>
                             <page string="Reason">
                                 <group>
-                                    <field name="note"/>
+                                    <field name="note" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
                                 </group>
                             </page>
                             <page string="Attachments">
-                                <field name="attachment_id"/>
+                                <field name="attachment_ids" widget="many2many_binary" class="oe_inline" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
                             </page>
                             
                         </notebook>
@@ -183,7 +187,7 @@
     </record>
       
     <menuitem name="Disciplinary Case" id="desciplinary_main_menu" parent="hr.menu_hr_root" sequence="4"/>
-    <menuitem name="Disciplinary Case type" id="desciplinary_sub_menu" parent="desciplinary_main_menu" action="disciplinary_case_type_menu_action" sequence="1"/>
-    <menuitem name="Disciplinary Case " id="desciplinary_case_sub_menu" parent="desciplinary_main_menu" action="disciplinary_case_menu_action" sequence="2"/>
+    <menuitem name="Case types" id="desciplinary_sub_menu" parent="desciplinary_main_menu" action="disciplinary_case_type_menu_action" sequence="2"/>
+    <menuitem name="Cases " id="desciplinary_case_sub_menu" parent="desciplinary_main_menu" action="disciplinary_case_menu_action" sequence="1"/>
   </data>
 </odoo>

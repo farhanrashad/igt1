@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class EmployeeDesciplinaryCaseType(models.Model):
@@ -24,33 +25,34 @@ class EmployeeDesciplinaryCase(models.Model):
         template = self.env['mail.template'].browse(template_id)
         template.send_mail(self.id, force_send=True)
         self.write({
-            'state': 'response',
+            'state': 'wait-resp',
         })    
         
     def action_waiting_case(self):
         self.write({
-            'state': 'waiting',
+            'state': 'wait-resp',
         })    
        
     def action_close_case(self):
         self.write({
             'state': 'close',
-        })    
-        
+        })
 
-    name = fields.Char(string='Order Reference',  copy=False,  index=True, default=lambda self: _('New'))
-    employee_id = fields.Many2one('hr.employee', string='Employee', store=True)
-    date = fields.Date(string='Date', store=True)
-    case_type = fields.Many2one('hr.employee.disciplinary.case.type',string='Case Type', store=True)
-    user_id = fields.Many2one('res.users', string='Issuer', store=True, required=True)
-    note = fields.Html(string="Description" )
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('waiting', 'Waiting'),
-        ('response', 'Response'),
+        ('wait-resp', 'Waiting Response'),
         ('close', 'Close'),
     ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
-    attachment_id = fields.Many2one('ir.attachment', string='Attachment')    
+    name = fields.Char(string='Order Reference', readonly=True, copy=False,  index=True, default=lambda self: _('New'))
+    employee_id = fields.Many2one('hr.employee', string='Employee', store=True)
+    date = fields.Date(string='Date', required=True,store=True)
+    case_type = fields.Many2one('hr.employee.disciplinary.case.type',required=True,string='Case Type',store=True)
+    user_id = fields.Many2one('res.users', string='Issuer', store=True, required=True)
+    note = fields.Html(string="Description" )
+
+    attachment_ids = fields.Many2many('ir.attachment', 'disp_case_ir_attachments_rel',
+                                      'case_id', 'attachment_id', string="Attachments",
+                                      help="Attach")
     @api.model
     def create(self,values):
         seq = self.env['ir.sequence'].get('hr.employee.disciplinary.case') 
