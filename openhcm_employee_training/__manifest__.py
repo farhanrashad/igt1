@@ -29,6 +29,7 @@ Employee Training
         'data/course_seq.xml',
         'data/mail_template_data.xml',
         'security/ir.model.access.csv',
+        'views/delivery_method_view.xml',
         'views/sessions_views.xml',
         'views/course_views.xml',
         'views/configuration_view.xml',

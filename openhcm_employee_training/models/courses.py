@@ -18,7 +18,8 @@ class EmployeeTrainingCourse(models.Model):
 
     name = fields.Char(string='Name', store=True, required=True)
     employee_id = fields.Many2one('hr.employee',string='Coordinator', store=True, required=True)
-    company_id = fields.Many2one('res.partner',string='Company', store=True)
+    company_id=fields.Many2one('res.company','Company',readonly=False,default=lambda self:self.env.company.id)
+    # company_id = fields.Many2one('res.partner',string='Company', store=True)
     trainer_id = fields.Many2one('res.partner', string='Trainer', store=True, required=True)
     currency_id = fields.Many2one('res.currency',string='Currency', store=True)
     amount = fields.Float(string='Cost')

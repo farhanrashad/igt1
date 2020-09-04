@@ -33,7 +33,7 @@ class EmployeeTrainingSessions(models.Model):
         })    
         
 
-    name = fields.Char(string='Order Reference',  copy=False,  index=True, default=lambda self: _('New'))
+    name = fields.Char(string='Order Reference',  copy=False,  index=True,readonly=True,default=lambda self: _('New'))
     delivery_method = fields.Many2one('hr.employee.training.course.delivery.method', string='Delivery Method', store=True, states={'draft': [('readonly', False)]},)
     start_date = fields.Date(string='Start Date', store=True, required=True)
     end_date = fields.Date(string='End Date', store=True, required=True)
