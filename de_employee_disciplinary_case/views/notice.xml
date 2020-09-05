@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="hr_employee_notice_form_view" model="ir.ui.view">
+            <field name="name">hr.employee.notice.form</field>
+            <field name="model">hr.employee.notice</field>
+            <field name="arch" type="xml">
+                <form string="Notice">
+                    <header>
+                        <button string="Submit" type="object" name="set_confirm" class="btn btn-primary" attrs="{'invisible': ['|',('state','=','confirm'),('state','=','done')]}"/>
+                        <button string="Confirm"   type="object" name="set_done"  class="btn btn-primary" attrs="{'invisible': ['|',('state','=','draft'),('state','=','done')]}"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+
+                    </header>
+                    <sheet>
+                        <div>
+							<h1>
+								<field name="name" readonly="1"/>
+							</h1>
+						</div>
+                        <group>
+                            <group>
+                                <field name="employee_id" widget="selection" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="user_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="job_title" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="parent_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="department_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="identity" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                            <group colspan="4" col="4">
+                                <field name="office_type" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="warning_type" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="date" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="created_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+
+                            </group>
+                            <group colspan="4" col="4">
+                                <field name="decision" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="improvement" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="consequence" attrs="{'readonly': [('state','!=','draft')]}"/>
+
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="hr_employee_offence_tree_view" model="ir.ui.view">
+            <field name="name">hr.employee.notice.tree</field>
+            <field name="model">hr.employee.notice</field>
+            <field name="arch" type="xml">
+                <tree string="Notice">
+                    <field name="employee_id"/>
+                    <field name="user_id"/>
+                    <field name="job_title"/>
+                    <field name="parent_id"/>
+                    <field name="department_id"/>
+                    <field name="identity"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="de_employee_notice_action" model="ir.actions.act_window">
+            <field name="name">Notice</field>
+            <field name="res_model">hr.employee.notice</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Notice" id="de_employee_disciplinary_notice_menu_" parent="de_employee_disciplinary_configuration_id"
+                  action="de_employee_notice_action" sequence="1"/>
+
+    </data>
+</odoo>
