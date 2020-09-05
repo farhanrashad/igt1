@@ -22,7 +22,7 @@
                                  <h1> <t t-esc="doc.name"/></h1>
 
 
-                                  <p style="margin:0;float:left"><b>Check In :</b><t t-esc="doc.check_in"/></p>
+                                  <p style="margin:0;float:left"><b>Check IN :</b><t t-esc="doc.check_in"/></p>
                                   <p style="margin:0;float:right"><b>Check Out :</b> <t t-esc="doc.check_out"/></p>
 
                                  <table class="table table-condensed" style="width:100%;text-align:center">

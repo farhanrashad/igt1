@@ -8,13 +8,16 @@
 
 <!-- child menu-->
 		<menuitem id="visit_visitor" name="Visitor" parent="visitor_root_menu"
-			sequence="1" />
-			
+			sequence="1" groups="group_gate_clerk"/>
+
+
+		<menuitem id="visit_reporting" name="Reporting" parent="visitor_root_menu"
+			sequence="2" groups="group_gate_manager"/>
 			
 		<menuitem id="visitor_visit_conf" name="Configuration" parent="visitor_root_menu"
-			sequence="2" />
+			sequence="9" groups="group_gate_manager" />
 
-<!--		sub menu -->
+<!--		sub child menu -->
 		<menuitem id="visitor_visit_details" name="Visitor Details" parent="visit_visitor"
 			action="action_visit_detail_view"
 			sequence="5" />
@@ -25,6 +28,10 @@
 
 		<menuitem id="visitor_visit_category" name="Visitor Category" parent="visitor_visit_conf"
 			action="action_visit_category_view"
+			sequence="4" />
+
+		<menuitem id="visitor_report" name="Reporting" parent="visit_reporting"
+			action="action_visitor_report_all"
 			sequence="4" />
 
 

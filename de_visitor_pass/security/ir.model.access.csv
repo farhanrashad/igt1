@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_rights,access.rights,model_visit_detail,base.group_user,1,1,1,1
+access_rights,access.rights,model_visit_detail,de_visitor_pass.group_gate_clerk,1,1,1,1
+access_rights_visitor_report,access.rights.visitor.report,model_visitor_report,de_visitor_pass.group_gate_manager,1,1,1,1
 access_rights_dur,access.rights.dur,model_visit_duration,base.group_user,1,1,1,1
 access_rights_cat,access.rights.cat,model_visit_category,base.group_user,1,1,1,1

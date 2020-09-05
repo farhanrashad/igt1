@@ -6,6 +6,11 @@
 			<field name="model">visit.detail</field>
 			<field name="arch" type="xml">
 				<form string="Visitor Detail">
+					<header>
+                        <button string="Check In" type="object" name="set_checkIn" class="btn btn-primary" attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button string="Check Out"   type="object" name="set_checkOut"  class="btn btn-primary" attrs="{'invisible': [('state','!=','in')]}"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,in,out"/>
+					</header>
 					<sheet>
 						<div>
 							<h1>
@@ -49,7 +54,7 @@
 						<notebook>
 							<page string="Purpose">
 								<group>
-									<field name="comment"/>
+									<field name="comment" nolabel="1"/>
 								</group>
 							</page>
 						</notebook>
