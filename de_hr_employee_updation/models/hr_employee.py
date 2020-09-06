@@ -81,7 +81,7 @@ class HrEmployee(models.Model):
 
     @api.onchange('spouse_complete_name', 'spouse_birthdate')
     def onchange_spouse(self):
-        relation = self.env.ref('hr_employee_updation.employee_relationship')
+        relation = self.env.ref('de_hr_employee_updation.employee_relationship')
         lines_info = []
         spouse_name = self.spouse_complete_name
         date = self.spouse_birthdate
@@ -100,4 +100,4 @@ class EmployeeRelationInfo(models.Model):
 
     _name = 'hr.employee.relation'
 
-    name = fields.Char(string="Relationship", help="Relationship with thw employee")
+    name = fields.Char(string="Relationship", help="Relationship with the employee")
