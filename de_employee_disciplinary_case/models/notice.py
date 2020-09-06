@@ -13,7 +13,7 @@ class HrEmployeeNotice(models.Model):
     employee_id = fields.Many2one('hr.employee', 'Employee',required=True)
     parent_id = fields.Many2one('hr.employee', 'Manager',readonly=True)
     department_id = fields.Many2one('hr.employee', 'Department',readonly=True)
-    user_id = fields.Many2one('res.user', 'User')
+    user_id = fields.Many2one('res.users', 'User')
     job_title = fields.Many2one("hr.employee",string="Job Title",readonly=True)
     identity = fields.Many2one("hr.employee","Identification No",readonly=True)
     office_type = fields.Many2one("hr.employee.offence", required=True)
