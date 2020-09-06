@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hr_employee_family,access.hr.employee.family,model_hr_employee_family,,1,1,1,1
-access_hr_employee_relation,access.hr.employee.relation,model_hr_employee_relation,,1,1,1,1
