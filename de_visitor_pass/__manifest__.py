@@ -24,14 +24,17 @@
 
     # always loaded
     'data': [
+        'security/visitor_security.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
         'views/visitor_visit_duration_view.xml',
         'views/visitor_visit_category_view.xml',
         'views/visitor_visit_detail_view.xml',
+        'reports/visitor_report_view.xml',
         'views/visitor_menu.xml',
         'reports/visitor_pass.xml',
         'reports/report.xml',
+
 
 
 
