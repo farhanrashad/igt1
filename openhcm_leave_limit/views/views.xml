@@ -3,12 +3,42 @@
 <odoo>
     <data>
 
-        <record id="view_holiday_status_form_auto_approve" model="ir.ui.view">
+        <record id="inherit_time_off_request_form" model="ir.ui.view">
             <field name="model">hr.leave</field>
             <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="after">
                     <group>
+                        <group string="Option">
+                            <label for="meeting" string="Meeting type"/>
+                            <div>
+                                <field name="meeting"/>
+                            </div>
+                            <label for="limit" string="Allow to Override Limit"/>
+                            <div>
+                                <field name="limit"/>
+                            </div>
+                            <label for="apply" string="Apply Double Validation"/>
+                            <div>
+                                <field name="apply"/>
+                            </div>
+                            <label for="report" string="Color in Report"/>
+                            <div>
+                                <field name="report"/>
+                            </div>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+
+        <record id="view_holiday_status_form_auto_approve" model="ir.ui.view">
+            <field name="model">hr.leave.type</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+                <field name="validity_stop" position="after">
                         <group string="Leave Limit">
                             <label for="leave_limit" string="Monthly Leave Limit"/>
                             <div>
@@ -19,32 +49,7 @@
                                 <field name="limit_days"/>
                             </div>
                         </group>
-                        <group string="Option">
-
-                            <label for="meeting" string="Meeting type"/>
-                            <div>
-                                <field name="meeting"/>
-                            </div>
-
-                                <label for="limit" string="Allow to Override Limit"/>
-                                <div>
-                                    <field name="limit"/>
-                                </div>
-
-                            <label for="apply" string="Apply Double Validation"/>
-                            <div>
-                                <field name="apply"/>
-                            </div>
-                            <label for="report" string="Color in Report"/>
-                                <div>
-                                    <field name="report"/>
-                                </div>
-                        </group>
-
-                    </group>
-
-
-                </xpath>
+                </field>
             </field>
         </record>
         <!--        <record id="leave_form_view" model="ir.ui.view">-->
