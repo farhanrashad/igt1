@@ -46,18 +46,23 @@ class VisitDetail(models.Model):
     #     return super(VisitDetail, self).write(vals)
 
     # adding new field total duration
-    total_duration = fields.Float(string="Total Duration", default="_get_total_duration")
+    total_duration = fields.Float(string="Total Duration")
 
+    @api.onchange('check_in','check_out')
     def _get_total_duration(self):
         print("printing difference ",self.check_out-self.check_in)
-        f =self.check_out
-        s = self.check_in
-        q = f - s
-        d_s = q.total_seconds()
-        print("in seconds----", d_s)
-        hours = divmod(d_s, 3600)[0]
-        print(type(hours))
-        self.total_duration=hours
+        if self.check_in:
+            f =self.check_out
+            s = self.check_in
+            q = f - s
+            d_s = q.total_seconds()
+            print("in seconds----", d_s)
+            hours = divmod(d_s, 3600)[0]
+            print(type(hours))
+            self.total_duration=float(hours)
+        else:
+            return
+
 
 
     @api.model
