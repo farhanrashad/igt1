@@ -9,14 +9,14 @@ class Orientation(models.Model):
 
     name = fields.Char(string='Employee Orientation', readonly=True, default=lambda self: _('New'))
     employee_name = fields.Many2one('hr.employee', string='Employee', size=32, required=True)
-    department = fields.Many2one('hr.department', string='Department', related='employee_name.department_id',
+    department = fields.Many2one('hr.department', string='Department',
                                  required=True)
     date = fields.Datetime(string="Date")
     # date = fields.Datetime.to_string(dateText)
     responsible_user = fields.Many2one('res.users', string='Responsible User')
     employee_company = fields.Many2one('res.company', string='Company', required=True,
                                        default=lambda self: self.env.user.company_id)
-    parent_id = fields.Many2one('hr.employee', string='Manager', related='employee_name.parent_id')
+    parent_id = fields.Many2one('hr.employee', string='Manager')
     job_id = fields.Many2one('hr.job', string='Job Title', related='employee_name.job_id',
                              domain="[('department_id', '=', department)]")
     orientation_id = fields.Many2one('employee.orientation.checklist', string='Orientation Checklist',
