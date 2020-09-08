@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <report
+            id="report_de_visitor_pass"
+            model="visit.detail"
+            string="Visitor Pass"
+            report_type="qweb-pdf"
+            name="de_visitor_pass.report_pass"
+            file="de_visitor_pass.report_pass"
+
+        />
+    </data>
+</odoo>
