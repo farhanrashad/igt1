@@ -56,12 +56,14 @@
                            
                         </page>
                          <page string="Pereferences">
+                             <field name="preferences_ids">
                              <tree>
                             
                                <field name="pref_name"  attrs="{'readonly': [('state', 'in','done')]}"/>
                                <field name="pref_value"  attrs="{'readonly': [('state', 'in','done')]}"/>
 
-                             </tree>  
+                             </tree> 
+                            </field>  
                            
                         </page>
                         <page string="Education / Degree Required">
