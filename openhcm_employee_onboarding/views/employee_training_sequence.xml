@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for employee.training -->
+        <record id="seq_emp_training" model="ir.sequence">
+            <field name="name">Employee Training</field>
+            <field name="code">employee.training</field>
+            <field name="prefix">TP</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>
