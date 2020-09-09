@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 
 
 class EmployeeDesciplinaryCaseType(models.Model):
-    _name = 'hr.employee.disciplinary.case.type'
+    _name = 'hr.employee.disciplinary.action.type'
     _description = 'HR Employee Desciplinary Case type'
     _order = 'name desc'
 
@@ -15,7 +15,7 @@ class EmployeeDesciplinaryCaseType(models.Model):
 
     
 class EmployeeDesciplinaryCase(models.Model):
-    _name = 'hr.employee.disciplinary.case'
+    _name = 'hr.employee.disciplinary.action'
     _description = 'HR Employee Desciplinary Case'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
     _order = 'name desc'
@@ -46,7 +46,7 @@ class EmployeeDesciplinaryCase(models.Model):
     name = fields.Char(string='Order Reference', readonly=True, copy=False,  index=True, default=lambda self: _('New'))
     employee_id = fields.Many2one('hr.employee', string='Employee', store=True)
     date = fields.Date(string='Date', required=True,store=True)
-    case_type = fields.Many2one('hr.employee.disciplinary.case.type',required=True,string='Case Type',store=True)
+    case_type = fields.Many2one('hr.employee.disciplinary.action.type',required=True,string='Case Type',store=True)
     user_id = fields.Many2one('res.users', string='Issuer', store=True, required=True)
     note = fields.Html(string="Description" )
 
@@ -55,7 +55,7 @@ class EmployeeDesciplinaryCase(models.Model):
                                       help="Attach")
     @api.model
     def create(self,values):
-        seq = self.env['ir.sequence'].get('hr.employee.disciplinary.case') 
+        seq = self.env['ir.sequence'].get('hr.employee.disciplinary.action') 
         values['name'] = seq
         res = super(EmployeeDesciplinaryCase,self).create(values)
         return res

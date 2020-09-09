@@ -1,8 +1,8 @@
 <odoo>
   <data>      
     <record model="ir.ui.view" id="disciplinary_case_type_tree_view">
-            <field name="name">hr.employee.disciplinary.case.type.tree</field>
-            <field name="model">hr.employee.disciplinary.case.type</field>
+            <field name="name">hr.employee.disciplinary.action.type.tree</field>
+            <field name="model">hr.employee.disciplinary.action.type</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
@@ -11,8 +11,8 @@
         </record>
       
        <record model="ir.ui.view" id="disciplinary_case_tree_view">
-            <field name="name">hr.employee.disciplinary.case.tree</field>
-            <field name="model">hr.employee.disciplinary.case</field>
+            <field name="name">hr.employee.disciplinary.action.tree</field>
+            <field name="model">hr.employee.disciplinary.action</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
@@ -27,8 +27,8 @@
         </record>
       
       <record model="ir.ui.view" id="con_job_order_form">
-            <field name="name">hr.employee.disciplinary.case.type.form</field>
-            <field name="model">hr.employee.disciplinary.case.type</field>
+            <field name="name">hr.employee.disciplinary.action.type.form</field>
+            <field name="model">hr.employee.disciplinary.action.type</field>
             <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -41,8 +41,8 @@
       </record> 
       
       <record id="view_disciplinary_case_kanban" model="ir.ui.view">
-            <field name="name">hr.employee.disciplinary.case.kanban</field>
-            <field name="model">hr.employee.disciplinary.case</field>
+            <field name="name">hr.employee.disciplinary.action.kanban</field>
+            <field name="model">hr.employee.disciplinary.action</field>
             <field name="arch" type="xml">
                 <kanban>
                     <field name="employee_id"/>
@@ -83,8 +83,8 @@
         </record>
       
       <record id="disciplinary_case_search" model="ir.ui.view">
-            <field name="name">hr.employee.disciplinary.case.search</field>
-            <field name="model">hr.employee.disciplinary.case</field>
+            <field name="name">hr.employee.disciplinary.action.search</field>
+            <field name="model">hr.employee.disciplinary.action</field>
             <field name="arch" type="xml">
                 <search string="Search Disciplinary Case">
                     <field name="name" filter_domain="['|', '|', ('date', 'ilike', self), ('name', 'ilike', self), ('employee_id', 'ilike', self)]" string="Reference"/>
@@ -99,8 +99,8 @@
         </record>
       
       <record model="ir.ui.view" id="disciplinary_case_calendar">
-            <field name="name">hr.employee.disciplinary.case.calendar</field>
-            <field name="model">hr.employee.disciplinary.case</field>
+            <field name="name">hr.employee.disciplinary.action.calendar</field>
+            <field name="model">hr.employee.disciplinary.action</field>
             <field name="priority" eval="2"/>
             <field name="arch" type="xml">
                 <calendar string="Calendar View" date_start="date" color="employee_id" hide_time="true" event_limit="5">
@@ -114,8 +114,8 @@
       
       
       <record model="ir.ui.view" id="disciplinary_case_form">
-            <field name="name">hr.employee.disciplinary.case.form</field>
-            <field name="model">hr.employee.disciplinary.case</field>
+            <field name="name">hr.employee.disciplinary.action.form</field>
+            <field name="model">hr.employee.disciplinary.action</field>
             <field name="arch" type="xml">
                 <form>
                     <header>
@@ -165,7 +165,7 @@
        <record id="disciplinary_case_type_menu_action" model="ir.actions.act_window">
         <field name="name">Disciplinary Case type</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">hr.employee.disciplinary.case.type</field>
+        <field name="res_model">hr.employee.disciplinary.action.type</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -177,11 +177,11 @@
       <record id="disciplinary_case_menu_action" model="ir.actions.act_window">
         <field name="name">Disciplinary Case</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">hr.employee.disciplinary.case</field>
+        <field name="res_model">hr.employee.disciplinary.action</field>
         <field name="view_mode">kanban,tree,calendar,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Add a New Disciplinary case 
+                Add a New Disciplinary Action
             </p>
         </field>
     </record>

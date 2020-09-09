@@ -7,7 +7,7 @@
         <!--Email template -->
         <record id="email_template_edi_disciplinary_case" model="mail.template">
             <field name="name">Disciplinay Case: Send by email</field>
-            <field name="model_id" ref="de_employee_disciplinary_case.model_hr_employee_disciplinary_case"/>
+            <field name="model_id" ref="de_employee_disciplinary_action.model_hr_employee_disciplinary_action"/>
             <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) |safe}</field>
             <field name="partner_to">${object.employee_id.id}</field>
             <field name="subject">Disciplinary case (Ref ${object.name or 'n/a'})</field>

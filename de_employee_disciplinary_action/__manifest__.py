@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Employee Desciplinary Case",
+    'name': "Employee Desciplinary Action",
 
     'summary': """
          Employee Desciplinary Case
