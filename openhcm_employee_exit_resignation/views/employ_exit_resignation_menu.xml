@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+
+		<menuitem id="exit_request_root_menu" name="Exit Request"
+				  action = "action_exit_request_root_view"
+				  active="True"
+				  sequence="0"/>
+
+		<menuitem id="Employee_exit_menu"
+				  name="Employee Exit"
+				  parent="exit_request_root_menu"
+			sequence="1" />
+
+		<menuitem id="Exit_form"
+				  name="Exit Form"
+				  parent="Employee_exit_menu"
+				  action="action_exit_form"
+				  sequence="1" />
+
+		<menuitem id="check_list"
+				  name="Check List"
+				  parent="Employee_exit_menu"
+				  action="action_check_list"
+				  sequence="2" />
+	</data>
+</odoo>
