@@ -20,6 +20,18 @@
 							 <field name="other_nationality" widget="many2many_tags"/>
 					     </group>
 					 </group>
+					 <separator string="Visa"/>
+					 <field name="visa_lines">
+							<tree editable="bottom">
+								<field name="description"/>
+								<field name="visa_Type" options="{'no_create': True , 'no_edit': True}"/>
+								<field name="Visa_issuance_Date"/>
+								<field name="Visa_Expiration_Date"/>
+								<field name="Visa_country"/>
+								<field name="no_of_entries"/>
+								<field name="state" invisible = '1'/>
+							</tree>
+					 </field>
 				 </page>
                 </xpath>
             </field>

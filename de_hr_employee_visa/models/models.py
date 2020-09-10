@@ -31,14 +31,10 @@ class VisaCardDetails(models.Model):
     visa_id = fields.Many2one('hr.employee', String="Visa Id")
     employee_id = fields.Many2one('hr.employee', String="Employee")
     description = fields.Char(string="Description")
-    visa_Type = fields.Many2one('visa.card.type', String="Visa Type", readonly=True, required=1,
-                                states={'to_request': [('readonly', False)]})
-    Visa_issuance_Date = fields.Date(string="Issuance Date", required=1, readonly=True,
-                                     states={'to_request': [('readonly', False)]})
-    Visa_Expiration_Date = fields.Date(string="Expiration Date", required=1, readonly=True,
-                                       states={'to_request': [('readonly', False)]})
-    Visa_country = fields.Many2one('res.country', string="Country", required=1, readonly=True,
-                                   states={'to_request': [('readonly', False)]})
+    visa_Type = fields.Many2one('visa.card.type', String="Visa Type",  required=1)
+    Visa_issuance_Date = fields.Date(string="Issuance Date", required=1)
+    Visa_Expiration_Date = fields.Date(string="Expiration Date", required=1)
+    Visa_country = fields.Many2one('res.country', string="Country", required=1)
     no_of_entries = fields.Selection([('single_entry_visa', 'Single Entry Visa'),
                                       ('double_entry_visa', 'Double Entry Visa'),
                                       ('multiple_entry_visa', 'Multiple Entry Visa')])
