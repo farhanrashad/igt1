@@ -46,10 +46,12 @@
             <form string="Employee Fleet Request">
                 <header>
                     <button name='confirm_action' string="Confirm" type="object" class='oe_highlight' states="new"/>
-                    <button name='approved_action' string="Approved" type="object" class='oe_highlight' states="confirmed" />
+                    <button name='approved_action' string="Approved" type="object" class='oe_highlight' states="confirmed"
+                            groups="hr.group_hr_manager,hr.group_hr_user" />
                     <button name='assigned_action' string="Assigned" type="object" class='oe_highlight' states="approved"/>
                     <button name='returned_action' string="Return" type="object" class='oe_highlight'
-                            states="assigned" />
+                            states="assigned"
+                    groups="hr.group_hr_manager,hr.group_hr_user"/>
 <!--                        groups="hr.group_hr_manager,hr.group_hr_user"-->
 <!--                        groups="hr.group_hr_manager,hr.group_hr_user"-->
                     <field name="state" widget="statusbar" statusbar_visible="new,confirmed,approved,assigned,return"/>
@@ -129,8 +131,6 @@
             </search>
         </field>
     </record>
-
-
 
 
     <record id="action_employee_fleet" model="ir.actions.act_window">
