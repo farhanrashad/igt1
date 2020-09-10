@@ -133,12 +133,12 @@
                         </div>
                         <group>
                             <group>
-                                <field name="employee_id" widget="selection" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
-                                <field name="case_type" widget="selection" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
+                                <field name="employee_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
+                                <field name="case_type" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
                             </group>
                             <group>
                                 <field name="date" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
-                                <field name="user_id" widget="selection" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
+                                <field name="user_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly': ['|',('state','=','wait-resp'),('state','=','close')]}"/>
                             </group>
                         </group>
                         <notebook>

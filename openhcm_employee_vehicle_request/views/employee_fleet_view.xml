@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--    hr.employee.inherit button-->
+
+
+    <record model="ir.ui.view" id="hr_employee_inherit_view">
+        <field name="name">hr.employee.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+            <button name="open"
+                    type="object" class="oe_stat_button" icon="fa-truck"
+                    help="show the contract for this vehicle">
+                <field name="test_count" widget="statinfo" string="Vehicle requests"/>
+            </button>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="sequence_employee_fleet" model="ir.sequence">
+        <field name="name">Vehicle Request Code</field>
+        <field name="code">employee.fleet</field>
+        <field eval="4" name="padding" />
+        <field name="prefix">VR</field>
+    </record>
+
+    <record model="ir.ui.view" id="fleet_vehicle_inherit_form_view">
+        <field name="name">fleet.vehicle.form.inherit.view</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+            <field name="car_value" position="after">
+                <field name="check_availability" invisible="1"/>
+                <field name="reserved_time" invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='employee_fleet_form_view'>
+        <field name="name">employee.fleet.form</field>
+        <field name="model">employee.fleet</field>
+        <field name="arch" type="xml">
+            <form string="Employee Fleet Request">
+                <header>
+                    <button name='confirm_action' string="Confirm" type="object" class='oe_highlight' states="new"/>
+                    <button name='approved_action' string="Approved" type="object" class='oe_highlight' states="confirmed" />
+                    <button name='assigned_action' string="Assigned" type="object" class='oe_highlight' states="approved"/>
+                    <button name='returned_action' string="Return" type="object" class='oe_highlight'
+                            states="assigned" />
+<!--                        groups="hr.group_hr_manager,hr.group_hr_user"-->
+<!--                        groups="hr.group_hr_manager,hr.group_hr_user"-->
+                    <field name="state" widget="statusbar" statusbar_visible="new,confirmed,approved,assigned,return"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="fleet" domain="[('check_availability','=',True)]" options="{'no_create': True , 'no_edit': True}"/>
+                            <field name="employee" options="{'no_create': True , 'no_edit': True}"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="department_id"/>
+                            <field name="project_id"/>
+                            <field name="task_id"/>
+                            <field name="returned_date" attrs="{'invisible': [('state','!=','return')]}"/>
+                        </group>
+                        <group>
+                            <field name="req_date"/>
+                            <field name="confirm_date"/>
+                            <field name="assigned_date"/>
+                            <field name="returned_date_time"/>
+                        </group>
+                        </group>
+                    <notebook>
+                            <page string="Purpose">
+                                <field name="purpose"/>
+                            </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='employee_fleet_tree_view'>
+        <field name="name">employee.fleet.tree</field>
+        <field name="model">employee.fleet</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" decoration-success="state == 'confirm'">
+                <field name="name"/>
+                <field name="employee"/>
+                <field name="fleet"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="project_id"/>
+                <field name="task_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='employee_fleet_search_view'>
+        <field name="name">employee.fleet.search</field>
+        <field name="model">employee.fleet</field>
+        <field name="arch" type="xml">
+            <search string="Custody">
+                <field name="name"/>
+                <field name="employee"/>
+                <field name="fleet"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="status" domain="[]" context="{'group_by':'state'}"/>
+                    <filter string="Employee" name="employee" domain="[]" context="{'group_by':'employee'}"/>
+                    <filter string="Vehicle" name="vehicle" domain="[]" context="{'group_by':'fleet'}"/>
+                    <filter string="Project" name="Project" domain="[]" context="{'group_by':'project_id'}"/>
+                    <filter string="Task" name="Task" domain="[]" context="{'group_by':'task_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+<!--    <record id="employee_fleet_view_dashboard1" model="ir.ui.view">-->
+<!--        <field name="name">employee.fleet.view.dashboard</field>-->
+<!--        <field name="model">employee.fleet</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <calendar js_class="time_off_calendar" string="Employee Flett"-->
+<!--                      form_view_id="%(openhcm_employee_vehicle_request.fleet_vehicle_inherit_form_view)d"-->
+<!--                      event_open_popup="true"-->
+<!--                      date_start="date_from"-->
+<!--                      date_stop="date_to"-->
+<!--                      mode="month"-->
+<!--                      quick_add="False"-->
+<!--                      color="employee">-->
+<!--                <field name="fleet"/>-->
+<!--            </calendar>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+    <record id="action_employee_fleet" model="ir.actions.act_window">
+        <field name="name">Vehicle Request</field>
+        <field name="res_model">employee.fleet</field>
+        <field name="view_mode">tree,form,calendar</field>
+        <field name="search_view_id" ref="employee_fleet_search_view"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a New Vehicle Request.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_employee_fleet_Approve" model="ir.actions.act_window">
+        <field name="name">Vehicle Request</field>
+        <field name="res_model">employee.fleet</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="employee_fleet_search_view"/>
+        <field name="domain">[('state' , '=' , 'approved')]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                No request for Approval
+            </p>
+        </field>
+    </record>
+
+    <record id="action_employee_fleet_Assign" model="ir.actions.act_window">
+        <field name="name">Vehicle Request</field>
+        <field name="res_model">employee.fleet</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="employee_fleet_search_view"/>
+        <field name="domain">[('state' , '=' , 'assigned')]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                No request for Assignment
+            </p>
+        </field>
+    </record>
+
+    <record id="action_employee_fleet_return" model="ir.actions.act_window">
+        <field name="name">Vehicle Request</field>
+        <field name="res_model">employee.fleet</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="employee_fleet_search_view"/>
+        <field name="domain">[('state' , '=' , 'returned')]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Not returned yet
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="employee_fleet_menu"
+              name="Fleet Requests"
+              parent="hr.menu_hr_root"
+              sequence="4"
+              />
+    <menuitem id="employee_fleet_sub_menu"
+              name="Vehicle Requests"
+              parent="employee_fleet_menu"
+              sequence="1"
+              action="action_employee_fleet"/>
+
+    <menuitem id="employee_fleet_sub_menu_approve"
+              name="Request To Approve"
+              parent="employee_fleet_menu"
+              sequence="2"
+              action="action_employee_fleet_Approve"/>
+
+    <menuitem id="employee_fleet_sub_menu_assign"
+              name="Request To Assign"
+              parent="employee_fleet_menu"
+              sequence="3"
+              action="action_employee_fleet_Assign"/>
+
+    <menuitem id="employee_fleet_sub_menu_return"
+              name="Request To Return"
+              parent="employee_fleet_menu"
+              sequence="4"
+              action="action_employee_fleet_return"/>
+</odoo>
