@@ -1,5 +1,18 @@
 <odoo>
-  <data>      
+  <data>
+      
+    <record id="project_task_form_search_view" model="ir.ui.view">
+			<field name="name">project.task.form.view.search</field>
+			<field name="model">project.task</field>
+			<field name="inherit_id" ref="project.view_task_search_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//group" position="inside">
+                    <filter string="Project Phases" name="phase_id" context="{'group_by': 'phase_id'}"/>
+				</xpath>
+
+			</field>
+		</record>  
+      
     <record id="project_task_form_view" model="ir.ui.view">
 			<field name="name">project.task.form.view</field>
 			<field name="model">project.task</field>
