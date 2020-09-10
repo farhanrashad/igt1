@@ -130,22 +130,7 @@
         </field>
     </record>
 
-<!--    <record id="employee_fleet_view_dashboard1" model="ir.ui.view">-->
-<!--        <field name="name">employee.fleet.view.dashboard</field>-->
-<!--        <field name="model">employee.fleet</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <calendar js_class="time_off_calendar" string="Employee Flett"-->
-<!--                      form_view_id="%(openhcm_employee_vehicle_request.fleet_vehicle_inherit_form_view)d"-->
-<!--                      event_open_popup="true"-->
-<!--                      date_start="date_from"-->
-<!--                      date_stop="date_to"-->
-<!--                      mode="month"-->
-<!--                      quick_add="False"-->
-<!--                      color="employee">-->
-<!--                <field name="fleet"/>-->
-<!--            </calendar>-->
-<!--        </field>-->
-<!--    </record>-->
+
 
 
     <record id="action_employee_fleet" model="ir.actions.act_window">
