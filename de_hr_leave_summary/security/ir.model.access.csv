@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_right_wizard,access_right_emp_sum_wizards,model_leave_summary,base.group_user,1,1,1,1

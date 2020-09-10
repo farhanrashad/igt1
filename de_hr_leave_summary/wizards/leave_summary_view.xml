@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="view_emp_sum_wizard" model="ir.ui.view">
+			<field name="name">Leave Summary Report</field>
+			<field name="model">leave.summary</field>
+			<field name="arch" type="xml">
+				<form string="Leave Summary Report">
+					<group>
+						<group>
+							<field name="date_from"  />
+							<field name="date_to"  />
+						</group>
+						<group>
+							<field name="department" widget="many2many_tags"/>
+						</group>
+					</group>
+					<footer>
+						<button name="action_report_gen" type="object" string="Generate Excel" class="oe_highlight" />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_emp_sum_wizard" model="ir.actions.act_window">
+			<field name="name">Leave Summary Report</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">leave.summary</field>
+			<field name="view_id" ref="view_emp_sum_wizard" />
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Reports -->
+        <report
+                id="leave_sum_xlsx"
+                model="hr.department"
+                string="Print to XLSX"
+                report_type="xlsx"
+                name="de_hr_leave_summary.report_leave_sum_xls"
+                file="Employee Attendance Report"
+
+
+        />
+    </data>
+</odoo>

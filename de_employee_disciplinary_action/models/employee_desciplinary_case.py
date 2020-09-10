@@ -21,7 +21,7 @@ class EmployeeDesciplinaryCase(models.Model):
     _order = 'name desc'
     
     def action_case_send(self):
-        template_id = self.env.ref('de_employee_disciplinary_case.email_template_edi_disciplinary_case').id
+        template_id = self.env.ref('de_employee_disciplinary_action.email_template_edi_disciplinary_case').id
         template = self.env['mail.template'].browse(template_id)
         template.send_mail(self.id, force_send=True)
         self.write({
