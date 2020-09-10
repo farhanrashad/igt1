@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+
+	    <record id="dept_manager_access" model="res.groups">
+	        <field name="name">Dept. Manager</field>
+	    </record>
+		<record id="hr_manager_access" model="res.groups">
+	        <field name="name">Hr Manager</field>
+	    </record>
+		<record id="general_manager_access" model="res.groups">
+	        <field name="name">General Manager</field>
+	    </record>
+
+	</data>
+</odoo>

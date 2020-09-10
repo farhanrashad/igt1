@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+app1Obaid,resignationApp,model_hr_employee_exit_resignation,,1,1,1,1
+app1,resignationAppNotebook,model_hr_employee_exit_resignation_notebook,,1,1,1,1

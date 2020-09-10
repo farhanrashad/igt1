@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="exit_report_document">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div>
+                        <div>
+                            <p align="center" style="font-size:50px"><b><t t-esc="doc.name"/> -Done</b></p>
+                            <p align="left" style="font-size:30px"><b>General Information</b></p>
+
+                            <table style="text-align: left; width:100%; font-size:15px;" border="0" cellspacing="0"  margin="0">
+                                <tr>
+                                    <td style="vertical-align: top; width: 250px;">
+                                        <b> Request Date:  </b>
+                                    </td>
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <t t-esc="doc.request_Date"/>
+                                    </td>
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <b> Department :  </b>
+                                    </td>
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <t t-esc="doc.department_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <b> Department Manager:  </b>
+                                    </td >
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <t t-esc="doc.Department_manager.name"/>
+                                    </td >
+
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <b> Job Title:  </b>
+                                    </td>
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <t t-esc="doc.job_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <t t-esc="doc.contact.name"/>
+                                    </td>
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <t t-esc="doc.contact.name"/>
+                                    </td>
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <b> Last day of work:  </b>
+                                    </td>
+                                    <td style="vertical-align: left; width: 250px;">
+                                        <t t-esc="doc.last_day_of_work"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!---Dates Table-->
+                        <div>
+                            <p align="left" style="font-size:30px"><b>Dates</b></p>
+
+                            <table style="text-align: left; width:100%; font-size:15px;" border="0"  cellspacing="0"  margin="0">
+                                <tr>
+                                    <td style="vertical-align: left; width:250px;">
+                                        <b> Confirm By </b>
+                                    </td >
+                                    <td style="vertical-align: left; width:250px;">
+                                        <t t-esc="doc.Confirm_by.name"/>
+                                    </td>
+                                    <td style="vertical-align: left; width:250px;">
+                                        <b> Confirm Date(Employee) </b>
+                                    </td>
+                                    <td style="vertical-align: left; width:250px;">
+                                        <t t-esc="doc.confirm_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; width: 468px;">
+                                        <b> Approved By Department Manager  </b>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.Department_manager.name"/>
+                                    </td>
+                                    <td style="vertical-align: top; width: 468px;">
+                                        <b> Approved Date (Department Manager)  </b>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.department_manager_approve_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; width: 468px;">
+                                        <b> Approved By Hr Manager  </b>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.Hr_manager.name"/>
+                                    </td>
+                                    <td style="vertical-align: top; width: 468px;">
+                                        <b> Approved Date (Hr Manager)  </b>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.hr_manger_approved_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; width: 468px;">
+                                        <b> Approved By General Manager </b>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.General_manager.name"/>
+                                    </td>
+                                    <td style="vertical-align: top; width: 468px;">
+                                        <b> Approved Date (General Manager)  </b>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.general_manager_approved_date"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <style>
+                                table,tr,td{
+                                border:1px solid;
+                                }
+                                table{
+                                cellpadding=20;
+                                }
+                            </style>
+                        </div>
+                        <div>
+                            <p align="left" style="font-size:30px"><b>Check List</b></p>
+                            <table style="text-align: left; width:100%; font-size:15px;" border="0" cellspacing="0"  margin="0">
+                            <tr>
+                                <td><b>Checklist</b></td>
+                                <td><b>Responsible User</b></td>
+                                <td><b>Remarks</b></td>
+                                <td><b>State</b></td>
+                            </tr>
+                            <tr t-foreach="doc.employ_information" t-as="line">
+                                <td><t t-esc="line.Check_list"/></td>
+                                <td><t t-esc="line.Responsible_User.name"/></td>
+                                <td><t t-esc="line.Remarks"/></td>
+                                <td><t t-esc="line.State"/></td>
+                            </tr>
+                        </table>
+                        </div>
+                        <div>
+                           <p><b> Reason For Exit</b> <t t-esc="doc.reason_for_exit"/></p>
+                            <p><b> Notes</b> <t t-esc="doc.notes"/></p>
+                    </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="exit_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="openhcm_employee_exit_resignation.exit_report_document" />
+            </t>
+        </t>
+    </template>
+
+</odoo>
