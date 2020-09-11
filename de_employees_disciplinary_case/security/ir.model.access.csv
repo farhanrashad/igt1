@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_offence,access_hr_employee_offence,model_hr_employee_offence,base.group_user,1,1,1,1
+access_hr_employee_notice,access_hr_employee_notice,model_hr_employee_notice,base.group_user,1,1,1,1
