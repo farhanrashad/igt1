@@ -17,15 +17,19 @@ class FleetReservedTime(models.Model):
 
 class FleetVehicleInherit(models.Model):
     _inherit = 'fleet.vehicle'
+    _name = 'fleet.vehicle'
+    
 
     check_availability = fields.Boolean(default=True, copy=False)
     reserved_time = fields.One2many('employee.fleet.reserved', 'reserved_obj', String='Reserved Time', readonly=1,
                                     ondelete='cascade')
 
-    test_count = fields.Integer(compute="_compute_count_all")
+    vehical_req_count = fields.Integer(compute="_compute_request_count_all")
+ 
+    def _compute_request_count_all(self):
+        for record in self:
+            record.vehical_req_count = self.env['employee.fleet'].search_count([('fleet', '=', record.id)])
 
-    def _compute_count_all(self):
-        self.test_count = 0
 
 
 class EmployeeFleet(models.Model):
@@ -36,6 +40,7 @@ class EmployeeFleet(models.Model):
     @api.model
     def create(self, vals):
         vals['name'] = self.env['ir.sequence'].next_by_code('employee.fleet')
+        vals['req_date'] = datetime.today()
         return super(EmployeeFleet, self).create(vals)
 
     # @api.multi
@@ -118,7 +123,7 @@ class EmployeeFleet(models.Model):
         self.returned_date = fields.datetime.now()
         self.state = 'return'
 
-    @api.constrains('date_rom', 'date_to')
+    @api.constrains('date_from', 'date_to')
     def onchange_date_to(self):
         for each in self:
             if each.date_from > each.date_to:
@@ -147,8 +152,7 @@ class EmployeeFleet(models.Model):
     name = fields.Char(string='Request Number', copy=False)
     employee = fields.Many2one('hr.employee', string='Employee', required=1, readonly=True,
                                states={'new': [('readonly', False)]})
-    req_date = fields.Datetime(string='Requested Date', default=fields.Date.context_today, required=1, readonly=True,
-                               states={'new': [('readonly', False)]})
+    req_date = fields.Datetime(string='Requested Date', readonly=True)
     confirm_date = fields.Datetime(string='Confirm Date', readonly=True)
     assigned_date = fields.Datetime(string='Assigned Date', readonly=True)
     returned_date_time = fields.Datetime(string='Return Date', readonly=True)

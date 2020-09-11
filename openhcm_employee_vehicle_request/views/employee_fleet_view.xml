@@ -36,6 +36,18 @@
                 <field name="check_availability" invisible="1"/>
                 <field name="reserved_time" invisible="1"/>
             </field>
+            
+            <xpath expr="//button[@name='open_assignation_logs']" position="before">
+	            <button name="all_requests_logs"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-car">
+                    <field name="vehical_req_count" widget="statinfo" string="Vehical Requests"/>
+                </button>
+            </xpath>
+            
+            
+            
         </field>
     </record>
 
@@ -136,7 +148,7 @@
     <record id="action_employee_fleet" model="ir.actions.act_window">
         <field name="name">Vehicle Request</field>
         <field name="res_model">employee.fleet</field>
-        <field name="view_mode">tree,form,calendar</field>
+        <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="employee_fleet_search_view"/>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
