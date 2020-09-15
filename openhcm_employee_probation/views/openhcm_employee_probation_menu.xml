@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <menuitem
+                name="Probation Period" id="hr_recruitment_probation_period"
+                parent="hr_recruitment.menu_hr_recruitment_root"
+                sequence="100"
+        />
+        <menuitem
+                name="Probation Period Form"
+                id="hr_recruitment_probation_period_form"
+                parent="hr_recruitment_probation_period"
+                sequence="50"
+                action="action_hr_recruitment_probation_period"/>
+    </data>
+</odoo>

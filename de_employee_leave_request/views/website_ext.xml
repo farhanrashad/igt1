@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+<!--    <template id="custom_sign_in" customize_show="True" inherit_id="website.layout" name="Custom Sign In">-->
+<!--        <xpath expr="//ul[@id='top_menu']" position="replace">-->
+<!--            <ul class="nav navbar-nav ml-auto text-right" id="top_menu">-->
+<!--                <li class="nav-item" t-if="website.user_id != user_id">-->
+<!--                    <a class="nav-link" role="menuitem" t-attf-href="/leave_page">-->
+<!--                        <span>Leave Request</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item divider"></li>-->
+<!--                <li class="nav-item dropdown" t-if="website.user_id != user_id">-->
+<!--                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">-->
+<!--                        <b>-->
+<!--                            <span t-esc="user_id.name"/>-->
+<!--                        </b>-->
+<!--                    </a>-->
+<!--                    <div class="dropdown-menu js_usermenu" role="menu">-->
+<!--                        <a href="/my/home" role="menuitem" class="dropdown-item">My Account</a>-->
+<!--                        <a id="o_logout" class="dropdown-item" role="menuitem" href="/web/session/logout?redirect=/">Logout</a>-->
+<!--                    </div>-->
+<!--                </li>-->
+<!--                <li class="nav-item" t-if="website.user_id == user_id">-->
+<!--                    <a class="nav-link" href="/web/login">-->
+<!--                        <b>Sign in</b>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+    <record id="menu_website_sale" model="website.menu">
+        <field name="name">Leave Request</field>
+        <field name="url">/leave_page</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">55</field>
+<!--        <field name="group_ids">77</field>-->
+    </record>
+
+    <record id="menu_website_leave" model="website.menu">
+        <field name="name">My Leaves</field>
+        <field name="url">/my_leave_page</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">56</field>
+    </record>
+
+</odoo>

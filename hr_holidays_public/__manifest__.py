@@ -1,0 +1,22 @@
+# Copyright 2015 2011,2013 Michael Telahun Makonnen <mmakonnen@gmail.com>
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+
+{
+    'name': 'HR Holidays Public',
+    'version': '13.0.1.0.0',
+    'category': 'Human Resources',
+    'author': "Dynexcel ",
+    'summary': "Manage Public Holidays",
+    'website': 'https://dynexcel.co',
+    'depends': [
+        'hr_holidays',
+    ],
+    'data': [
+        'data/data.xml',
+        'security/ir.model.access.csv',
+        'views/hr_holidays_public_view.xml',
+        'views/hr_leave_type.xml',
+        'wizards/holidays_public_next_year_wizard.xml',
+    ],
+    'installable': True,
+}

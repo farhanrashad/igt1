@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+
+		<menuitem id="menu_hr_available_holidays_report_tree"
+        name="Leave Summary"
+        parent="hr_holidays.menu_hr_holidays_report"
+        action="action_emp_sum_wizard"
+        sequence="0"/>
+		
+		<!--  
+		<menuitem id="employee_sum_wizard" name="Leave Summary Report"
+			action="action_emp_sum_wizard"
+			sequence="98" />
+-->
+
+	</data>
+</odoo>
+

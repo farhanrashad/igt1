@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <report
+            id="report_employee_exit_resignation"
+            model="hr.employee.exit.resignation"
+            string="Employee Exit Report"
+            report_type="qweb-pdf"
+            name="openhcm_employee_exit_resignation.exit_report"
+            file="openhcm_employee_exit_resignation.exit_report"
+
+        />
+    </data>
+</odoo>
