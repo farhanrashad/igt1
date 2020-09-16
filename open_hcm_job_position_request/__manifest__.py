@@ -12,7 +12,6 @@
         'hr',
         'hr_recruitment',
         'base',
-        'hr_skills',  
     ],
     'data': [
         'security/security.xml',
