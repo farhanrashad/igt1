@@ -9,7 +9,7 @@ class PartnerModification(models.Model):
     @api.onchange('stage_id')
     def onchange_stage(self):
         if self.stage_id == 'new':
-	    self.active = False
+	        self.active = False
         elif self.stage_id == 'Qualify':
             self.active = True	
        	
