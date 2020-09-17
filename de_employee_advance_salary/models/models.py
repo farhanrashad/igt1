@@ -53,7 +53,7 @@ class EmployeeAdvanceSalary(models.Model):
     
     
     @api.model
-    def action_send_email(self):
+    def action_send_email_tes(self):
 #         rec = super(ResPartnerInh, self).create(vals)
         
         #email when new partner created
@@ -105,7 +105,7 @@ class EmployeeAdvanceSalary(models.Model):
 #         return rec
     
     
-    def action_send_email_t(self):
+    def action_send_email(self):
         
         self.ensure_one()
         self.request_date = datetime.today() 
