@@ -11,6 +11,7 @@
     'depends': [
         'hr',
         'hr_recruitment',
+        ''hr_skills, 
         'base',
     ],
     'data': [
