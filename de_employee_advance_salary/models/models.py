@@ -377,7 +377,7 @@ class EmployeeAdvanceSalary(models.Model):
         if vals.get('name',_('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('hr.employee.advance.salary') or _('New')
         #user_obj = self.search([('employee_id','=', vals['employee_id'])])
-        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id)])
+        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
         sum = 0
         for count in user_obj:
             sum = sum + 1
