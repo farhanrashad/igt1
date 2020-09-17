@@ -13,6 +13,7 @@ class EmployeeInherit(models.Model):
             'binding_type': 'action',
             'multi': False,
             'name': 'Tasks',
+            'domain': [('employee_id','=', self.name)],,
             'target': 'current',
             'res_model': 'hr.employee.advance.salary',
             'view_mode': 'tree,form',
@@ -23,8 +24,8 @@ class EmployeeInherit(models.Model):
         self.advance_sal_req = count
     ad_check = fields.Boolean(string='Allow advance salary')    
     advance_sal_req = fields.Integer(string='Salary Request', compute='get_advance_salary_count')
-    sal_limit = fields.Float(string='Advance Salary Request', store =True)
-    sal_req_limit = fields.Integer(string='Advance Salary Limit', store=True,)
+    sal_limit = fields.Float(string='Advance Salary Request', store =True, attrs={'invisible': ['|',('ad_check','=', False)])
+    sal_req_limit = fields.Integer(string='Advance Salary Limit', store=True, attrs={'invisible': ['|',('ad_check','=', False)])
     
     
     
