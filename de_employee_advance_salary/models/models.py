@@ -13,7 +13,7 @@ class EmployeeInherit(models.Model):
             'binding_type': 'action',
             'multi': False,
             'name': 'Tasks',
-            'domain': [('employee_id','=', self.name)],,
+            'domain': [('employee_id','=', self.name)],
             'target': 'current',
             'res_model': 'hr.employee.advance.salary',
             'view_mode': 'tree,form',
@@ -332,7 +332,7 @@ class EmployeeAdvanceSalary(models.Model):
         vals = {
             'payment_type': 'outbound',
 #             'partner_type': 'customer',
-            'partner_id': self.employee_id.id,
+            'partner_id': self.emp_partner_id.id,
             'amount': self.amount,
             'payment_date': self.confirm_date,
             'communication': self.name,
