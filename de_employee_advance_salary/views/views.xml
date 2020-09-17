@@ -14,8 +14,8 @@
 				<xpath expr="//group[@name='active_group']" position="after">
 					<group string="Advance Salary">
                         <field name="ad_check"/>
-                        <field name="sal_limit"  attrs="{'required': ['|',('ad_check','=', True)]}"/>
-                        <field name="sal_req_limit" attrs="{'required': ['|',('ad_check','=', True)]}"/>
+                        <field name="sal_limit"  attrs="{'invisible': ['|',('ad_check','!=', True)]}"/>
+                        <field name="sal_req_limit" attrs="{'invisible': ['|',('ad_check','!=', True)]}"/>
                         
                      </group>
 				</xpath>      
