@@ -9,7 +9,7 @@ class HrPayslipsInherit(models.Model):
     def compute_sheet(self):
         res = super(HrPayslipsInherit, self).compute_sheet()
         other_inputs = self.env['hr.payslip.input'].search([('code','=', 'ADV')])
-        paid_amount = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id),('state','=', 'paid')])
+        paid_amount = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id),('state','=', 'paid')('request_date','=',self.date_from),('confirm_date','=',self.date_to)])
         for sal_amount in paid_amount: 
             for rec in other_inputs:
                 data = []

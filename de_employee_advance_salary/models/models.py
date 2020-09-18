@@ -376,15 +376,15 @@ class EmployeeAdvanceSalary(models.Model):
     def create(self,vals):
         if vals.get('name',_('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('hr.employee.advance.salary') or _('New')
-        #user_obj = self.search([('employee_id','=', vals['employee_id'])])
-        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
-        sum = 0
-        for count in user_obj:
-            sum = sum + 1
-        if sum > self.employee_id.sal_req_limit:
-            raise exceptions.ValidationError('You can create maximum'+ ' ' + self.employee_id.sal_req_limit + ' ' + 'Advance Salary request Per Year.')
-        else:
-            pass        
+#         if self.employee_id:
+#             user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
+#             sum = 0
+#             for count in user_obj:
+#                 sum = sum + 1
+#             if sum > self.employee_id.sal_req_limit:
+#                 raise exceptions.ValidationError('You can create maximum'+ ' ' + self.employee_id.sal_req_limit + ' ' + 'Advance Salary request Per Year.')
+#             else:
+#                 pass        
 #         seq = self.env['ir.sequence'].get('hr.employee.advance.salary') 
 #         values['name'] = seq
         res = super(EmployeeAdvanceSalary,self).create(vals)
@@ -392,11 +392,11 @@ class EmployeeAdvanceSalary(models.Model):
     
 #     @api.multi
     def write(self, vals):
-        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id.name','=', self.employee_id.name)])
+        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
         sum = 0
         for count in user_obj:
             sum = sum + 1
-        if sum > self.employee_id.sal_req_limit:
+        if sum >= self.employee_id.sal_req_limit:
             raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_req_limit) + ' ' + 'Advance Salary request Per Year.')
         else:
             pass        
@@ -417,11 +417,11 @@ class EmployeeAdvanceSalary(models.Model):
         if self.employee_id:    
             if self.employee_id.sal_limit == 0:
                 raise exceptions.ValidationError('Plaese define' +' '+ str(self.employee_id.name) +' '+'Advance Salary Limit Amount.') 
-        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id.name','=', self.employee_id.name)])
+        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
         sum = 0
         for count in user_obj:
             sum = sum + 1
-        if sum > self.employee_id.sal_req_limit:
+        if sum >= self.employee_id.sal_req_limit:
             raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_req_limit) + ' ' + 'Advance Salary request Per Year.')
         else:
             pass    

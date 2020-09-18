@@ -13,6 +13,7 @@ class EmployeeInherit(models.Model):
             'binding_type': 'action',
             'multi': False,
             'name': 'Tasks',
+            'domain': [('employee_id','=', self.name)],
             'target': 'current',
             'res_model': 'hr.employee.advance.salary',
             'view_mode': 'tree,form',
@@ -23,8 +24,8 @@ class EmployeeInherit(models.Model):
         self.advance_sal_req = count
     ad_check = fields.Boolean(string='Allow advance salary')    
     advance_sal_req = fields.Integer(string='Salary Request', compute='get_advance_salary_count')
-    sal_limit = fields.Float(string='Advance Salary Request', store =True)
-    sal_req_limit = fields.Integer(string='Advance Salary Limit', store=True,)
+    sal_limit = fields.Float(string='Advance Salary Request', store =True, attrs={'invisible': ['|',('ad_check','=', False)]})
+    sal_req_limit = fields.Integer(string='Advance Salary Limit', store=True, attrs={'invisible': ['|',('ad_check','=', False)]})
     
     
     
@@ -53,7 +54,7 @@ class EmployeeAdvanceSalary(models.Model):
     
     
     @api.model
-    def action_send_email(self):
+    def action_send_email_tes(self):
 #         rec = super(ResPartnerInh, self).create(vals)
         
         #email when new partner created
@@ -105,7 +106,7 @@ class EmployeeAdvanceSalary(models.Model):
 #         return rec
     
     
-    def action_send_email_t(self):
+    def action_send_email(self):
         
         self.ensure_one()
         self.request_date = datetime.today() 
@@ -331,7 +332,7 @@ class EmployeeAdvanceSalary(models.Model):
         vals = {
             'payment_type': 'outbound',
 #             'partner_type': 'customer',
-            'partner_id': self.employee_id.id,
+            'partner_id': self.emp_partner_id.id,
             'amount': self.amount,
             'payment_date': self.confirm_date,
             'communication': self.name,
@@ -375,14 +376,15 @@ class EmployeeAdvanceSalary(models.Model):
     def create(self,vals):
         if vals.get('name',_('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('hr.employee.advance.salary') or _('New')
-        user_obj = self.search([('employee_id','=', vals['employee_id'])])
-        sum = 0
-        for count in user_obj:
-            sum = sum + 1
-        if sum > self.employee_id.sal_req_limit:
-            raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_limit) + ' ' + 'Advance Salary request Per Year.')
-        else:
-            pass        
+#         if self.employee_id:
+#             user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
+#             sum = 0
+#             for count in user_obj:
+#                 sum = sum + 1
+#             if sum > self.employee_id.sal_req_limit:
+#                 raise exceptions.ValidationError('You can create maximum'+ ' ' + self.employee_id.sal_req_limit + ' ' + 'Advance Salary request Per Year.')
+#             else:
+#                 pass        
 #         seq = self.env['ir.sequence'].get('hr.employee.advance.salary') 
 #         values['name'] = seq
         res = super(EmployeeAdvanceSalary,self).create(vals)
@@ -390,11 +392,11 @@ class EmployeeAdvanceSalary(models.Model):
     
 #     @api.multi
     def write(self, vals):
-        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id.name','=', self.employee_id.name)])
+        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
         sum = 0
         for count in user_obj:
             sum = sum + 1
-        if sum > self.employee_id.sal_req_limit:
+        if sum >= self.employee_id.sal_req_limit:
             raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_req_limit) + ' ' + 'Advance Salary request Per Year.')
         else:
             pass        
@@ -415,11 +417,11 @@ class EmployeeAdvanceSalary(models.Model):
         if self.employee_id:    
             if self.employee_id.sal_limit == 0:
                 raise exceptions.ValidationError('Plaese define' +' '+ str(self.employee_id.name) +' '+'Advance Salary Limit Amount.') 
-        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id.name','=', self.employee_id.name)])
+        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
         sum = 0
         for count in user_obj:
             sum = sum + 1
-        if sum > self.employee_id.sal_req_limit:
+        if sum >= self.employee_id.sal_req_limit:
             raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_req_limit) + ' ' + 'Advance Salary request Per Year.')
         else:
             pass    
