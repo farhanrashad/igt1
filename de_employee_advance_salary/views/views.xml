@@ -53,7 +53,7 @@
 
 <!--                         <button name="action_close_case" states="waiting,response" class="oe_highlight" string="Close Case" type="object"/>
  -->
-                        <field name="state" widget="statusbar" statusbar_visible="draft,request,approval.hrconfirm,paid"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,request,approval.hrconfirm,paid,close"/>
                     </header>
                     <sheet>
                          <div class="oe_button_box" name="button_box">

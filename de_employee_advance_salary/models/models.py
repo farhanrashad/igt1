@@ -235,6 +235,9 @@ class EmployeeAdvanceSalary(models.Model):
           'default_composition_mode': 'comment',
 
         }
+        self.write({
+            'state': 'close',
+        }) 
 
         return {
 
@@ -332,8 +335,8 @@ class EmployeeAdvanceSalary(models.Model):
         vals = {
             'payment_type': 'outbound',
 #             'partner_type': 'customer',
-            'partner_id': self.emp_partner_id.id,
-            'amount': self.amount,
+            'partner_id': self.employee_id.id,
+            'amount': self.paid_amount,
             'payment_date': self.confirm_date,
             'communication': self.name,
             'journal_id': self.payment_method.id,
@@ -355,7 +358,7 @@ class EmployeeAdvanceSalary(models.Model):
     employee_id = fields.Many2one('hr.employee', string='Employee', store=True, required=True)
     request_date = fields.Date(string='Request Date', store=True, readonly=True,)
     confirm_date = fields.Date(string='Confirm Date', store=True, readonly=True,)
-    amount = fields.Float(string='Request Amount', store=True, required=True)
+    amount = fields.Float(string='Request Amount', required=True)
     manager_id = fields.Many2one('hr.employee',string='Department Manager', store=True, readonly=True,related='employee_id.parent_id')
     conf_manager_id = fields.Many2one('hr.employee',string='Confirm Manager', store=True, readonly=True,)
     emp_partner_id = fields.Many2one('hr.employee', string='Employee Partner', store=True, attrs={'required': ['|',('state','=', 'hrconfirm')]})
@@ -369,6 +372,7 @@ class EmployeeAdvanceSalary(models.Model):
         ('approval', 'Approval'),
         ('hrconfirm', 'HR Confirm'),        
         ('paid', 'Paid'),
+        ('close','Close')
     ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
     department_id = fields.Many2one('hr.department', string='Department', readonly=True ,related='employee_id.department_id')
     
@@ -376,7 +380,11 @@ class EmployeeAdvanceSalary(models.Model):
     def create(self,vals):
         if vals.get('name',_('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('hr.employee.advance.salary') or _('New')
-#         if self.employee_id:
+#         if self.amount == 0.0:
+#             raise exceptions.ValidationError('Please enter amount.')
+#         else:
+#             pass
+
 #             user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
 #             sum = 0
 #             for count in user_obj:
@@ -390,21 +398,17 @@ class EmployeeAdvanceSalary(models.Model):
         res = super(EmployeeAdvanceSalary,self).create(vals)
         return res
     
-#     @api.multi
-    def write(self, vals):
-        user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
-        sum = 0
-        for count in user_obj:
-            sum = sum + 1
-        if sum >= self.employee_id.sal_req_limit:
-            raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_req_limit) + ' ' + 'Advance Salary request Per Year.')
-        else:
-            pass        
-#         seq = self.env['ir.sequence'].get('hr.employee.advance.salary') 
-#         values['name'] = seq
-#         res = super(EmployeeAdvanceSalary,self).create(vals) 
-        res = super(EmployeeAdvanceSalary, self).write(vals)
-        return res
+#     def write(self, vals):
+#         user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
+#         sum = 0
+#         for count in user_obj:
+#             sum = sum + 1
+#         if sum > self.employee_id.sal_req_limit:
+#             raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_req_limit) + ' ' + 'Advance Salary request Per Year.')
+#         else:
+#             pass         
+#         res = super(EmployeeAdvanceSalary, self).write(vals)
+#         return res
     
     @api.onchange('employee_id')
     def onchange_employee(self):
@@ -421,16 +425,13 @@ class EmployeeAdvanceSalary(models.Model):
         sum = 0
         for count in user_obj:
             sum = sum + 1
-        if sum >= self.employee_id.sal_req_limit:
+        if sum > self.employee_id.sal_req_limit:
             raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_req_limit) + ' ' + 'Advance Salary request Per Year.')
         else:
             pass    
         
     
-#     @api.onchange('employee_id')
-#     def onchange_employee(self):
-#         if self.employee_id.sal_limit == 0:
-#             raise exceptions.ValidationError('Plaese define' + self.employee_id + 'Advance Salary Limit Amount')
+
         
     
     @api.onchange('amount')
@@ -439,17 +440,15 @@ class EmployeeAdvanceSalary(models.Model):
             raise exceptions.ValidationError('Advance Salary Amount Must be less than' + ' ' +str(self.employee_id.sal_limit))
         else:
             pass
-            
-#     @api.onchange('employee_id')
-#     def onchange_employee(self):
-#         user_obj = self.env['hr.employee.advance.salary'].search([('employee_id.name','=', self.employee_id.name)])
-#         sum = 0
-#         for count in user_obj:
-#             sum = sum + 1
-#         if sum > self.employee_id.sal_req_limit:
-#             raise exceptions.ValidationError('You can create maximum'+ str(self.employee_id.sal_limit) + 'Advance Salary request Per Year.')
-#         else:
-#             pass
+        
+        
+    @api.onchange('paid_amount')
+    def onchange_paid_amount(self):
+        if self.amount < self.paid_amount:
+            raise exceptions.ValidationError('Paid Amount must be less than or equal to Request amount.')
+        else:
+            pass        
+
             
             
             

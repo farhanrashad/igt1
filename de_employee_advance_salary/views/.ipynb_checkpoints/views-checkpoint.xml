@@ -14,8 +14,8 @@
 				<xpath expr="//group[@name='active_group']" position="after">
 					<group string="Advance Salary">
                         <field name="ad_check"/>
-                        <field name="sal_limit"  attrs="{'required': ['|',('ad_check','=', True)]}"/>
-                        <field name="sal_req_limit" attrs="{'required': ['|',('ad_check','=', True)]}"/>
+                        <field name="sal_limit"  attrs="{'invisible': ['|',('ad_check','!=', True)]}"/>
+                        <field name="sal_req_limit" attrs="{'invisible': ['|',('ad_check','!=', True)]}"/>
                         
                      </group>
 				</xpath>      
@@ -53,7 +53,7 @@
 
 <!--                         <button name="action_close_case" states="waiting,response" class="oe_highlight" string="Close Case" type="object"/>
  -->
-                        <field name="state" widget="statusbar" statusbar_visible="draft,request,approval.hrconfirm,paid"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,request,approval.hrconfirm,paid,close"/>
                     </header>
                     <sheet>
                          <div class="oe_button_box" name="button_box">
