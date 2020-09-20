@@ -1,5 +1,6 @@
 from odoo import models, fields, api, _
 from odoo import exceptions 
+from odoo.exceptions import UserError, ValidationError
 from datetime import datetime
 
 
@@ -24,7 +25,7 @@ class EmployeeInherit(models.Model):
         self.advance_sal_req = count
     ad_check = fields.Boolean(string='Allow advance salary')    
     advance_sal_req = fields.Integer(string='Salary Request', compute='get_advance_salary_count')
-    sal_limit = fields.Float(string='Advance Salary Request', store =True, attrs={'invisible': ['|',('ad_check','=', False)]})
+    sal_limit = fields.Float(string='Advance Salary Amount', store =True, attrs={'invisible': ['|',('ad_check','=', False)]})
     sal_req_limit = fields.Integer(string='Advance Salary Limit', store=True, attrs={'invisible': ['|',('ad_check','=', False)]})
     
     
@@ -53,58 +54,7 @@ class EmployeeAdvanceSalary(models.Model):
         }
     
     
-    @api.model
-    def action_send_email_tes(self):
-#         rec = super(ResPartnerInh, self).create(vals)
-        
-        #email when new partner created
-        ctx = {}
-#         email_list = ''
-        email_list = self.env['res.users'].sudo().search(
-            [('id', '=', self.uid.id)]) 
-        
-        if email_list:
-            ctx['partner_manager_email'] = email_list
-            ctx['email_from'] = self.env.user.email
-            ctx['partner_name'] = self.env.user.name
-#             ctx['customer_name'] = rec.name
-            ctx['lang'] = self.env.user.lang
-            template = self.env.ref('de_employee_advance_salary.email_template')
-            base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-            db = self.env.cr.dbname
-            ctx['action_url'] = "{}/web?db={}#id={}&view_type=form&model=res.partner".format(base_url, db, self.id)
-            
-#             if self.env.cr.dbname == 'dont_use' or self.env.cr.dbname == 'oxvor_production' or self.env.cr.dbname == 'inhouse_testing':
-            template.with_context(ctx).sudo().send_mail(rec.id, force_send=True, raise_exception=False)
-        
-        return 
-    
-#     def action_send_email(self):
-        
-#         #email when new partner created
-#         ctx = {}
-#         email_list = ''
-#         email_list = [user.email for user in self.env['res.users'].sudo().search([])
-        
-# #         email_list = [user.email for user in self.env['res.users'].sudo().search([])         
-# #         print("email list...",email_list)
-# #         if email_list:
-#         ctx['partner_manager_email'] = ','.join(
-#                 [email for email in email_list if email])
-#         ctx['email_from'] = self.env.user.email
-#         ctx['partner_name'] = self.env.user.name
-#         ctx['customer_name'] = rec.name
-#         ctx['lang'] = self.env.user.lang
-#         template = self.env.ref('de_employee_advance_salary.email_template')
-#         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-# #            db = self.env.cr.dbname
-# #             ctx['action_url'] = "{}/web?db={}#id={}&view_type=form&model=res.partner".format(base_url, db, self.id)
-            
-# #             if self.env.cr.dbname == 'dont_use' or self.env.cr.dbname == 'oxvor_production' or self.env.cr.dbname == 'inhouse_testing':
-#         template.with_context(ctx).sudo().send_mail(rec.id, force_send=True, raise_exception=False)
-        
-#         return rec
-    
+ 
     
     def action_send_email(self):
         
@@ -308,6 +258,14 @@ class EmployeeAdvanceSalary(models.Model):
            'context': ctx,
 
         }
+    
+    
+    def unlink(self):
+        for leave in self:
+            if leave.state in ('hrconfirm','paid'):
+                raise UserError(_('You cannot delete an order form  which is not draft or close. '))
+     
+            return super(EmployeeAdvanceSalary, self).unlink()
         
               
 
@@ -332,6 +290,8 @@ class EmployeeAdvanceSalary(models.Model):
     def action_paid(self):
         if  not self.payment_method:
             raise exceptions.ValidationError('Please Define Payment Method and Paid amount.')
+        elif self.paid_amount > self.amount:
+            raise exceptions.ValidationError('Paid Amount must be less than or equal to Request Amount.')
         vals = {
             'payment_type': 'outbound',
 #             'partner_type': 'customer',
@@ -359,11 +319,11 @@ class EmployeeAdvanceSalary(models.Model):
     request_date = fields.Date(string='Request Date', store=True, readonly=True,)
     confirm_date = fields.Date(string='Confirm Date', store=True, readonly=True,)
     amount = fields.Float(string='Request Amount', required=True)
-    manager_id = fields.Many2one('hr.employee',string='Department Manager', store=True, readonly=True,related='employee_id.parent_id')
+    manager_id = fields.Many2one('hr.employee',string='Department Manager', store=True, readonly=True, related='employee_id.parent_id')
     conf_manager_id = fields.Many2one('hr.employee',string='Confirm Manager', store=True, readonly=True,)
-    emp_partner_id = fields.Many2one('hr.employee', string='Employee Partner', store=True, attrs={'required': ['|',('state','=', 'hrconfirm')]})
-    payment_method = fields.Many2one('account.journal', string='Payment Method', store=True, attrs={'required': ['|',('state','=', 'hrconfirm')]})
-    paid_amount = fields.Char(string='Paid Amount', store=True, attrs={'required': ['|',('state','=', 'hrconfirm')]})
+    emp_partner_id = fields.Many2one('hr.employee', string='Employee Partner', store=True, )
+    payment_method = fields.Many2one('account.journal', string='Payment Method', store=True,)
+    paid_amount = fields.Float(string='Paid Amount', store=True,)
 
     note = fields.Html(string="Reason" ,)
     state = fields.Selection([
@@ -380,35 +340,12 @@ class EmployeeAdvanceSalary(models.Model):
     def create(self,vals):
         if vals.get('name',_('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('hr.employee.advance.salary') or _('New')
-#         if self.amount == 0.0:
-#             raise exceptions.ValidationError('Please enter amount.')
-#         else:
-#             pass
-
-#             user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
-#             sum = 0
-#             for count in user_obj:
-#                 sum = sum + 1
-#             if sum > self.employee_id.sal_req_limit:
-#                 raise exceptions.ValidationError('You can create maximum'+ ' ' + self.employee_id.sal_req_limit + ' ' + 'Advance Salary request Per Year.')
-#             else:
-#                 pass        
-#         seq = self.env['ir.sequence'].get('hr.employee.advance.salary') 
-#         values['name'] = seq
         res = super(EmployeeAdvanceSalary,self).create(vals)
         return res
     
-#     def write(self, vals):
-#         user_obj = self.env['hr.employee.advance.salary'].search([('employee_id','=', self.employee_id.id)])
-#         sum = 0
-#         for count in user_obj:
-#             sum = sum + 1
-#         if sum > self.employee_id.sal_req_limit:
-#             raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_req_limit) + ' ' + 'Advance Salary request Per Year.')
-#         else:
-#             pass         
-#         res = super(EmployeeAdvanceSalary, self).write(vals)
-#         return res
+    
+
+    
     
     @api.onchange('employee_id')
     def onchange_employee(self):
@@ -425,7 +362,7 @@ class EmployeeAdvanceSalary(models.Model):
         sum = 0
         for count in user_obj:
             sum = sum + 1
-        if sum > self.employee_id.sal_req_limit:
+        if sum == self.employee_id.sal_req_limit:
             raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_req_limit) + ' ' + 'Advance Salary request Per Year.')
         else:
             pass    
@@ -442,12 +379,7 @@ class EmployeeAdvanceSalary(models.Model):
             pass
         
         
-    @api.onchange('paid_amount')
-    def onchange_paid_amount(self):
-        if self.amount < self.paid_amount:
-            raise exceptions.ValidationError('Paid Amount must be less than or equal to Request amount.')
-        else:
-            pass        
+   
 
             
             

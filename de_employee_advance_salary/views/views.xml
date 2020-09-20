@@ -79,9 +79,9 @@
                                 <field name="request_date" attrs="{'readonly':[('state','!=', 'draft')]}" />
                                 <field name="confirm_date" attrs="{'readonly':[('state','!=', 'draft')]}" />
                                 <field name="conf_manager_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
-                                <field name="emp_partner_id"  attrs="{'invisible':[('state','!=', 'hrconfirm','paid')]}"/>
-                                <field name="payment_method"  attrs="{'invisible':[('state','!=', 'hrconfirm','paid')]}"/>
-                                <field name="paid_amount"  attrs="{'invisible':[('state','!=', 'hrconfirm','paid')]}"/>
+                                <field name="emp_partner_id"  attrs="{'invisible':[('state','in', ('draft','request','approval'))]}"/>
+                                <field name="payment_method"  attrs="{'invisible':[('state','in', ('draft','request','approval'))]}"/>
+                                <field name="paid_amount"  attrs="{'invisible':[('state','in', ('draft','request','approval'))]}"/>
 
                             </group>
                         </group>
