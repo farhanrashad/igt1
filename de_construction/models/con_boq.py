@@ -219,7 +219,7 @@ class MaterialBoq(models.Model):
                                                states={'draft': [('readonly', False)]})
     picking_ids = fields.Many2one(comodel_name='job.order', string='', required=False)
     equipment_cost = fields.Float(string='Equipment / Machinery Cost')
-    worker_cost = fields.Float(string='Worker / Resource Cost').a
+    worker_cost = fields.Float(string='Worker / Resource Cost')
     work_cost_package = fields.Float(string='Work Cost Package')
     subcontract_cost = fields.Float(string='Subcontract Cost')
     purchase_order_count = fields.Integer('Purchase Order', compute='_get_purchase_order_count')
