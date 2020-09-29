@@ -10,6 +10,20 @@ class employee_loanForm(models.Model):
     _name='employee.loan'
     _description="Employee Loan"
     
+    
+    def action_view_lines(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'binding_type': 'action',
+#             'multi': False,
+            'name': 'Installment',
+            'domain': [('order_line','=', self.id)],
+            'target': 'current',
+            'res_model': 'employee.loan.installment',
+            'view_mode': 'tree,form',
+        }
+    
 
  
     state = fields.Selection([
@@ -86,7 +100,7 @@ class employee_loanForm(models.Model):
 #         q=self.env['account.account'].search([('name','=','Bank'),('name','=','Loan')])
 #         qc=self.env['account.account'].search([('name','=','Account Payable')])
         move_dict = {
-              'name':self.code.name,
+              'name':self.code,
               'ref': self.code,
               'journal_id': self.journal_id.id,
               'date': self.date,
@@ -214,7 +228,8 @@ class employee_loanForm(models.Model):
     end_date=fields.Date("End Date")
     job_position=fields.Many2one('hr.job',string="Job Position")
     date=fields.Date("Date",default=datetime.today(),readonly=True)
-    department=fields.Many2one('hr.department',"Department Manager",compute="related_employee")
+    department=fields.Many2one('hr.department',"Department",compute="related_employee")
+    manager_id=fields.Many2one('hr.employee', related='department.manager_id')
     payment_method=fields.Selection([('by_payslip','ByPayslip')], string='Payment Method',required=True,default='by_payslip')
     type=fields.Many2one('employee.loan.type',string="Type",required=True)
     loan_amount=fields.Float('Loan Amount',required=True)
@@ -240,7 +255,12 @@ class employee_loanForm(models.Model):
 
     
 class loan_installments_Form(models.Model):
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
     _name='employee.loan.installment'
+    _description = 'This is Loan Installment'
+    
+    def action_paid(self):
+        self.write({'state':'paid'})
     
     name=fields.Char("Name")
     date=fields.Date("Date")
@@ -254,7 +274,7 @@ class loan_installments_Form(models.Model):
         ('paid', 'Paid'),
         ], string='Status', default='draft')
     
-    order_line=fields.Many2one("employee.loan.installment")   
+    order_line=fields.Many2one("employee.loan")   
     
 class employee_loan_type(models.Model):
     _name='employee.loan.type'
@@ -279,38 +299,70 @@ class hr_loan_Form(models.Model):
     _inherit ='hr.payslip'
     
     def compute_sheet(self):
+#         for other_input in self.input_line_ids:
+#             other_input.unlink()
         level = super(hr_loan_Form, self).compute_sheet()
-        lo_line=[]
-        if self.employee_id:
-            if self.date_from and self.date_to:
-                lines = self.env['employee.loan'].search([('state','=','done')])
-                for lin in lines:
-                    if lin.start_date and lin.end_date:
-                            if self.employee_id.id==lin.name.id:
-                                for ss in lin.statements_line:
-                                    if ss.date<=self.date_from and ss.date<=self.date_to and ss.state=='draft':
-                                        vals = {
-                                                    'input_type_id':self.env['hr.payslip.input.type'].search([('code','=','LOAN')])[0].id,
-                                                    'amount':ss.total,
-                                                }
-                                        
-                                        
-                                        lo_line.append((0, 0, vals))
-                                
-                                
-                self.input_line_ids=lo_line                        
+        other_inputs = self.env['hr.payslip.input.type'].search([('code','=', 'LOANINT'),('code','=', 'LOANINS')])
+        paid_amount = self.env['employee.loan.installment'].search([('name','=', self.employee_id.id),('state','=', 'paid'),('date','>=', self.date_from),('date','<=', self.date_to)])
+        data = []
+        amount = 0
+        for input in other_inputs:
+            if input.code == 'LOANINS':
+                for sal_amount in paid_amount:            
+                    amount = amount + sal_amount.installment_amount
+                data.append((0,0,{
+                                'payslip_id': self.id,
+                                'sequence': 1,
+                                'code': input.code,
+                                'contract_id': self.contract_id.id,
+                                'input_type_id': input.id,
+                                'amount': amount,
+                                }))
+            self.input_line_ids = data
+            if input.code == 'LOANINT':
+                for sal_amount in paid_amount:            
+                    amount = amount + sal_amount.interest
+                data.append((0,0,{
+                                'payslip_id': self.id,
+                                'sequence': 1,
+                                'code': input.code,
+                                'contract_id': self.contract_id.id,
+                                'input_type_id': input.id,
+                                'amount': amount,
+                                }))
+            self.input_line_ids = data
         return level
         
-    def action_payslip_done(self):
+#         lo_line=[]
+#         if self.employee_id:
+#             if self.date_from and self.date_to:
+#                 lines = self.env['employee.loan'].search([('state','=','done')])
+#                 for lin in lines:
+#                     if lin.start_date and lin.end_date:
+#                             if self.employee_id.id==lin.name.id:
+#                                 for ss in lin.statements_line:
+#                                     if ss.date<=self.date_from and ss.date<=self.date_to and ss.state=='draft':
+#                                         vals = {
+#                                                     'input_type_id':self.env['hr.payslip.input.type'].search([('code','=','LOAN')])[0].id,
+#                                                     'amount':ss.total,
+#                                                 }
+                                        
+                                        
+#                                         lo_line.append((0, 0, vals))
+                                
+                                
+#                 self.input_line_ids=lo_line                        
         
-        levels = super(hr_loan_Form, self).action_payslip_done()
-        if self.employee_id:
-            if self.date_from and self.date_to:
-                lines = self.env['employee.loan'].search([('state','=','done')])
-                for lin in lines:
-                    if lin.start_date and lin.end_date:
-                            if self.employee_id.id==lin.name.id:
-                                for ss in lin.statements_line:
-                                    if ss.date<=self.date_from and ss.date<=self.date_to and ss.state=='draft':
-                                        ss.update({'state':'paid'})
-        return levels
+#     def action_payslip_done(self):
+        
+#         levels = super(hr_loan_Form, self).action_payslip_done()
+#         if self.employee_id:
+#             if self.date_from and self.date_to:
+#                 lines = self.env['employee.loan'].search([('state','=','done')])
+#                 for lin in lines:
+#                     if lin.start_date and lin.end_date:
+#                             if self.employee_id.id==lin.name.id:
+#                                 for ss in lin.statements_line:
+#                                     if ss.date<=self.date_from and ss.date<=self.date_to and ss.state=='draft':
+#                                         ss.update({'state':'paid'})
+#         return levels
