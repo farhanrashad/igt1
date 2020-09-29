@@ -36,12 +36,12 @@ class employee_loanForm(models.Model):
         ], string='Status', readonly=True, index=True, copy=False, default='draft', track_visibility='onchange')
     
     
-#     def unlink(self):
-#         for leave in self:
-#             if leave.state in ('done','h_r','dept_approve'):
-#                 raise UserError(_('You cannot delete an order form  which is not draft or cancelled. '))
-#      
-#             return super(employee_loanForm, self).unlink()
+    def unlink(self):
+        for leave in self:
+            if leave.state in ('done','h_r','dept_approve'):
+                raise UserError(_('You cannot delete an order form  which is not draft or cancelled. '))
+     
+            return super(employee_loanForm, self).unlink()
     
     @api.constrains('loan_amount')    
     def onchange_loanamount(self):
@@ -221,10 +221,10 @@ class employee_loanForm(models.Model):
     code=fields.Char('Code',copy=False)
     name=fields.Many2one('hr.employee',string="Employee",required=True)
     start_date=fields.Date("Start Date",required=True)
-    journal_id = fields.Many2one('account.journal', string='Journal', default=_get_default_journal)
-    interest_account_id = fields.Many2one('account.account', string="Interest Account", default=_get_default_interest_account)
-    loan_account_id = fields.Many2one('account.account', string="Loan Account", default=_get_default_loan_account)
-    debit_account_id = fields.Many2one('account.account', string="Debit Account", default=_get_default_debit_account)    
+    journal_id = fields.Many2one('account.journal', string='Journal', default=_get_default_journal,required=True)
+    interest_account_id = fields.Many2one('account.account', string="Interest Account", default=_get_default_interest_account,required=True)
+    loan_account_id = fields.Many2one('account.account', string="Loan Account", default=_get_default_loan_account,required=True)
+    debit_account_id = fields.Many2one('account.account', string="Debit Account", default=_get_default_debit_account,required=True)    
     end_date=fields.Date("End Date")
     job_position=fields.Many2one('hr.job',string="Job Position")
     date=fields.Date("Date",default=datetime.today(),readonly=True)
@@ -272,7 +272,7 @@ class loan_installments_Form(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('paid', 'Paid'),
-        ], string='Status', default='draft')
+        ], readonly=True, index=True, copy=False, default='draft', track_visibility='onchange')
     
     order_line=fields.Many2one("employee.loan")   
     
