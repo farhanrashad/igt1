@@ -48,6 +48,6 @@
     </record>
       
    <menuitem id="res_township_menu" name="Townships"
-            parent="purchase.menu_purchase_config" action="res_townships_menu_action" sequence="6"/>
+            parent="purchase.menu_purchase_root" action="res_townships_menu_action" sequence="6"/>
     </data>
 </odoo>
