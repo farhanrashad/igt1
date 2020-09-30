@@ -9,6 +9,7 @@ class employee_loanForm(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
     _name='employee.loan'
     _description="Employee Loan"
+#     _rec_name='code'
     
     
     def action_view_lines(self):
@@ -77,7 +78,7 @@ class employee_loanForm(models.Model):
                         k=k+1
                         date_after_month = self.start_date+ relativedelta(months=k)
                         vals = {
-                                    'name':self.code+'-'+str(z),
+                                    'name':self.name+'-'+str(z),
                                     'date':date_after_month,
                                     'loan_amount':self.loan_amount,
                                     'interest':self.interest_amount/self.term,
@@ -100,8 +101,8 @@ class employee_loanForm(models.Model):
 #         q=self.env['account.account'].search([('name','=','Bank'),('name','=','Loan')])
 #         qc=self.env['account.account'].search([('name','=','Account Payable')])
         move_dict = {
-              'name':self.code,
-              'ref': self.code,
+              'name':self.name,
+              'ref': self.name,
               'journal_id': self.journal_id.id,
               'date': self.date,
               'state': 'draft',
@@ -109,7 +110,7 @@ class employee_loanForm(models.Model):
         debit_amount = self.loan_amount + self.interest_amount
         debit_line = (0, 0, {
 #                      'move_id': move.id,
-                'name': self.code,
+                'name': self.name,
                 'debit': abs(debit_amount),
                 'credit': 0.0,
                 'account_id': self.debit_account_id.id,
@@ -118,7 +119,7 @@ class employee_loanForm(models.Model):
         debit_sum += debit_line[2]['debit'] - debit_line[2]['credit']
         if self.interest_account_id:
             credit_line = (0, 0, {
-                              'name': self.code,
+                              'name': self.name,
                               'debit': 0.0,
                               'credit': abs(self.interest_amount),
                               'account_id': self.interest_account_id.id,
@@ -128,7 +129,7 @@ class employee_loanForm(models.Model):
 
         if self.loan_account_id:
             credit_line = (0, 0, {
-                              'name': self.code,
+                              'name': self.name,
                               'debit': 0.0,
                               'credit': abs(self.loan_amount),
                               'account_id': self.loan_account_id.id,
@@ -148,13 +149,13 @@ class employee_loanForm(models.Model):
          
     @api.model
     def create(self, vals):
-        if 'code' not in vals or vals['code'] == False:
-            sequence = self.env.ref('openhcm_employee_loan.code')
-            vals['code'] = sequence.next_by_id()
+        if 'name' not in vals or vals['name'] == False:
+            sequence = self.env.ref('openhcm_employee_loan.name_seq')
+            vals['name'] = sequence.next_by_id()
         return super(employee_loanForm, self).create(vals)
     
     def action_view_journal(self):   
-        po = self.env['account.move'].search([('ref', '=', self.code) ])
+        po = self.env['account.move'].search([('ref', '=', self.name) ])
         action = self.env.ref('account.action_move_journal_line').read()[0]
         action['context'] = {
         'domain':[('id','in',po.ids)]
@@ -218,8 +219,8 @@ class employee_loanForm(models.Model):
             ('name', '=', 'Account Payable'),],
             limit=1).id
    
-    code=fields.Char('Code',copy=False)
-    name=fields.Many2one('hr.employee',string="Employee",required=True)
+    name=fields.Char('Code',copy=False)
+    employee_id =fields.Many2one('hr.employee',string="Employee",required=True)
     start_date=fields.Date("Start Date",required=True)
     journal_id = fields.Many2one('account.journal', string='Journal', default=_get_default_journal,required=True)
     interest_account_id = fields.Many2one('account.account', string="Interest Account", default=_get_default_interest_account,required=True)
@@ -250,7 +251,7 @@ class employee_loanForm(models.Model):
     def related_employee(self):
         for s in self:
             
-            s.department=s.name.department_id.id
+            s.department=s.employee_id.department_id.id
 
 
     
@@ -353,16 +354,16 @@ class hr_loan_Form(models.Model):
                                 
 #                 self.input_line_ids=lo_line                        
         
-#     def action_payslip_done(self):
+    def action_payslip_done(self):
         
-#         levels = super(hr_loan_Form, self).action_payslip_done()
-#         if self.employee_id:
-#             if self.date_from and self.date_to:
-#                 lines = self.env['employee.loan'].search([('state','=','done')])
-#                 for lin in lines:
-#                     if lin.start_date and lin.end_date:
-#                             if self.employee_id.id==lin.name.id:
-#                                 for ss in lin.statements_line:
-#                                     if ss.date<=self.date_from and ss.date<=self.date_to and ss.state=='draft':
-#                                         ss.update({'state':'paid'})
-#         return levels
+        levels = super(hr_loan_Form, self).action_payslip_done()
+        if self.employee_id:
+            if self.date_from and self.date_to:
+                lines = self.env['employee.loan'].search([('state','=','done')])
+                for lin in lines:
+                    if lin.start_date and lin.end_date:
+                            if self.employee_id.id==lin.name.id:
+                                for ss in lin.statements_line:
+                                    if ss.date<=self.date_from and ss.date<=self.date_to and ss.state=='draft':
+                                        ss.update({'state':'paid'})
+        return levels
