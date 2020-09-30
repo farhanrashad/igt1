@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
-                    <field name="text_name"/>
+                    <field name="city"/>
                 </tree>
             </field>
         </record>
@@ -23,10 +23,10 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="name"/>                                                                     
+                                <field name="city"/>                                                                     
                             </group>
                             <group>
-                                <field name="text_name"/>
+                                <field name="name"/>
                             </group>
                         </group>
                         
@@ -48,6 +48,6 @@
     </record>
       
    <menuitem id="res_township_menu" name="Townships"
-            parent="purchase.menu_purchase_root" action="res_townships_menu_action" sequence="6"/>
+            parent="purchase.menu_purchase_config" action="res_townships_menu_action" sequence="6"/>
     </data>
 </odoo>

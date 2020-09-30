@@ -7,8 +7,8 @@ class ContactTownship(models.Model):
     _name = 'res.townships'
     _description = 'This is Township model'
 
-    name = fields.Char(string="City", required=True)
-    text_name = fields.Char(string="Name",required=True)
+    city = fields.Char(string="City", required=True)
+    name = fields.Char(string="Name",required=True)
 
     
 
