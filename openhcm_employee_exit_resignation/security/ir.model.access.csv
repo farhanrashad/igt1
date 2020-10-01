@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-app1Obaid,resignationApp,model_hr_employee_exit_resignation,,1,1,1,1
-app1,resignationAppNotebook,model_hr_employee_exit_resignation_notebook,,1,1,1,1
+access_hr_employee_exit_resignation,access.hr.employee.exit.resignation,model_hr_employee_exit_resignation,,1,1,1,1
+access_hr_employee_exit_resignation_checklist,access.hr.employee.exit.resignation.checklist,model_hr_employee_exit_resignation_checklist,,1,1,1,1
+access_hr_employee_exit_resignation_checklist_line,access.hr.employee.exit.resignation.checklist.line,model_hr_employee_exit_resignation_checklist_line,,1,1,1,1
