@@ -25,5 +25,5 @@ class StockMoveLine(models.Model):
 class AccountAsset(models.Model):
     _inherit = 'account.asset'
 
-    picking_id = fields.Char(string="Value Adjustment")    
+    picking_id = fields.Char(string="Value Adjustment", readonly=True)    
 
