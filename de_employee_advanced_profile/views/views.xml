@@ -22,48 +22,7 @@
               <field name="inherit_id" ref="hr.view_employee_form"/>
 			<field name="arch" type="xml">
 				<xpath expr="//page[@name='hr_settings']" position='after'>
-				 <page string="Experience">
-					 <!--	relation id  -->
-					 <field name="experience_lines">
-							<tree editable="bottom">
-								<field name="company"/>
-								<field name="job_title"/>
-								<field name="From"/>
-								<field name="To"/>
-								<field name="comments"/>
-							</tree>
-					 </field>
-				 </page>
-                  <page string="Skill">
-					<!--	relation id  -->
-					<field name="skill_lines">
-						<tree editable="bottom">
-							<field name="skill"/>
-							<field name="years_of_experience"/>
-						</tree>
-					</field>
-				 </page>
-                  <page string="Language">
-					<!--	relation id  -->
-					<field name="language_lines">
-						<tree editable="bottom">
-							<field name="language"/>
-							<field name="fluency"/>
-							<field name="competency"/>
-							<field name="comments"/>
-						</tree>
-					</field>
-				 </page>
-				<page string="Education">
-					<!--	relation id  -->
-					<field name="education_lines">
-						<tree editable="bottom">
-							<field name="level"/>
-							<field name="year"/>
-							<field name="cgpa_score"/>
-						</tree>
-					</field>
-				</page>
+
 				<page string="Documents">
 					<!--	relation id  -->
 					<field name="document_lines">
