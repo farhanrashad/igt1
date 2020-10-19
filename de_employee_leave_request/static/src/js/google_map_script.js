@@ -14,6 +14,10 @@ var marker;
 var geocoder = new google.maps.Geocoder();
 var infowindow = new google.maps.InfoWindow();
 // var waypoints = [];
+remaining_leaves: function(){
+    alert('Hello World.')
+   }
+
 function initialize() {
     map = new google.maps.Map(document.getElementById('MAP'), {
         mapTypeId: google.maps.MapTypeId.ROADMAP,

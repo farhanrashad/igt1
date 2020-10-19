@@ -1,6 +1,9 @@
 from odoo import http
 from odoo.http import request
 from datetime import datetime
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 
 
@@ -25,8 +28,20 @@ class MyLeaves(http.Controller):
 
     @http.route('/leave_page', type="http", auth="user", website=True)
     def leave_template(self, **kw):
-        print("Execution Here.........................")
-        return http.request.render('de_employee_leave_request.leave_template', leave_page_content())
+        print("Execution Here.........................", kw)
+        user = request.env.user.id
+        employee = request.env['hr.employee'].search([('user_id', '=', user)])
+        if employee:
+            return http.request.render('de_employee_leave_request.leave_template', leave_page_content())
+        else:
+            raise UserError(_("You are not allowed to modify this data."))
+        # leave_type = int(kw.get('holiday_status_id'))
+        # leave_category = request.env['hr.leave.type'].search([('id', '=', leave_type)])
+        # emp_id = int(kw.get('employee_id'))
+        # leave_days = leave_category.get_days(emp_id)[leave_type]
+        # print('days', leave_days)
+        # remaining_leave = leave_days['remaining_leaves']
+        # return http.request.render('de_employee_leave_request.leave_template', leave_page_content())
 
     @http.route('/my_leave_page', type="http", auth="user", website=True)
     def leave_page_template(self, **kw):
@@ -43,7 +58,26 @@ class MyLeaves(http.Controller):
         d1 = datetime.strptime(date_from, fmt)
         d2 = datetime.strptime(date_to, fmt)
         days_diff = float((d2 - d1).days)
-        print('days', days_diff)
+        leave_type = int(kw.get('holiday_status_id'))
+        emp_id = int(kw.get('employee_id'))
+        total_leaves = request.env['hr.leave.allocation'].search_count([('holiday_status_id', '=', leave_type),
+                                                                        ('employee_id', '=', emp_id)])
+        # total_leaves = count(total_leaves)
+        allocated_leaves = request.env['hr.leave'].search_count([('holiday_status_id', '=', leave_type), ('employee_id', '=', emp_id),
+                                                                ('state', '=', 'validate')])
+        remaining_leaves = total_leaves - allocated_leaves
+        print('remaining', remaining_leaves)
+        leave_category = request.env['hr.leave.type'].search([('id', '=', leave_type)])
+        leave_days = leave_category.get_days(emp_id)[leave_type]
+        days = leave_days['remaining_leaves']
+        print('days', days)
+        print('new', leave_category.get_days(emp_id))
+        print('leave_type', leave_type)
+        print('remaining', leave_days)
+        print('requested', days_diff)
+        # remaining_leave = leave_days['remaining_leaves']
+        if days_diff > days:
+            raise ValidationError(_('The number of remaining time off is not sufficient for this time off type.'))
         doctor_val = {
             'holiday_status_id': int(kw.get('holiday_status_id')),
             'employee_id': int(kw.get('employee_id')),
@@ -54,5 +88,5 @@ class MyLeaves(http.Controller):
             'name': kw.get('name'),
         }
         leave_record = request.env['hr.leave'].sudo().create(doctor_val)
-        print('new', leave_record.id)
         return request.render("de_employee_leave_request.patient_thanks", {})
+
