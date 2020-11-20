@@ -894,7 +894,7 @@ class AttendanceDevice(models.Model):
                 users = r.device_user_ids.filtered(lambda user: not user.employee_id)
                 if users:
                     users.generate_employees()
-    @api.model
+    #@api.model
     def action_attendance_download(self):
         DeviceUserAttendance = self.env['user.attendance']
         AttendanceUser = self.env['attendance.device.user']
