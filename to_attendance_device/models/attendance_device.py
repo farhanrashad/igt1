@@ -894,7 +894,88 @@ class AttendanceDevice(models.Model):
                 users = r.device_user_ids.filtered(lambda user: not user.employee_id)
                 if users:
                     users.generate_employees()
-    #@api.model
+
+    @api.model
+    def cron_action_attendance_download(self):
+        DeviceUserAttendance = self.env['user.attendance']
+        AttendanceUser = self.env['attendance.device.user']
+
+        for r in self:
+            error_msg = ""
+            if r.map_before_dl:
+                r.action_finger_template_download()
+
+            attendance_states = {}
+            for state_line in r.attendance_device_state_line_ids:
+                attendance_states[state_line.attendance_state_id.code] = state_line.attendance_state_id.id
+
+            attendance_data = r.getAttendance()
+            for attendance in attendance_data:
+                if attendance.punch not in attendance_states.keys():
+                    if not r.ignore_unknown_code:
+                        raise UserError(_('We found attendance status code "%s" from your device %s '
+                                      'but no such code found in the device\'s settings in Odoo. '
+                                      'Please go to the device %s and add this attendance code.\n'
+                                      'In case you want to ignore to load attendance data with this code, '
+                                      ' go to the device setting in Odoo and check "Ignore Unknown Code".')
+                                    % (attendance.punch, r.display_name, r.display_name))
+                    else:
+                        continue
+
+                user_id = AttendanceUser.with_context(active_test=False).search([
+                    ('user_id', '=', attendance.user_id),
+                    ('device_id', '=', r.id)], limit=1)
+                if user_id:
+                    utc_timestamp = r.convert_time_to_utc(attendance.timestamp, r.tz)
+                    str_utc_timestamp = fields.Datetime.to_string(utc_timestamp)
+                    duplicate_attend = DeviceUserAttendance.search([
+                        ('device_id', '=', r.id),
+                        ('user_id', '=', user_id.id),
+                        ('timestamp', '=', str_utc_timestamp)], limit=1)
+
+                    if not duplicate_attend:
+                        try:
+                            vals = {
+                                'device_id': r.id,
+                                'user_id': user_id.id,
+                                'timestamp': str_utc_timestamp,
+                                'status': attendance.punch,
+                                'attendance_state_id': attendance_states[attendance.punch]
+                                }
+
+                            DeviceUserAttendance.create(vals)
+                        except Exception as e:
+                            error_msg += str(e) + "<br />"
+                            error_msg += _("Error create DeviceUserAttendance record: device_id %s; user_id %s; timestamp %s; attendance_state_id %s.<br />") % (
+                                r.id,
+                                user_id.id,
+                                format_datetime(r.env, attendance.timestamp, r.tz),
+                                attendance_states[attendance.punch]
+                                )
+                            _logger.error(error_msg)
+                            pass
+            r.last_attendance_download = fields.Datetime.now()
+            if error_msg and r.debug_message:
+                r.message_post(body=error_msg)
+
+            if not r.auto_clear_attendance:
+                continue
+
+            if r.auto_clear_attendance_schedule == 'on_download_complete':
+                r.action_attendance_clear()
+            elif r.auto_clear_attendance_schedule == 'time_scheduled':
+                # datetime in the timezone of the device
+                dt_now = self.convert_utc_time_to_tz(datetime.utcnow(), r.tz)
+                float_dt_now = self.time_to_float_hour(dt_now)
+
+                if int(r.auto_clear_attendance_dow) == -1 or dt_now.weekday() == int(r.auto_clear_attendance_dow):
+                    delta = r.auto_clear_attendance_hour - float_dt_now
+                    if abs(delta) <= 0.5 or abs(delta) >= 23.5:
+                        r.action_attendance_clear()
+
+
+
+
     def action_attendance_download(self):
         DeviceUserAttendance = self.env['user.attendance']
         AttendanceUser = self.env['attendance.device.user']
