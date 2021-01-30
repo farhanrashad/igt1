@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--		form view for visit category-->
+		<record id="view_visitor_category_form" model="ir.ui.view">
+			<field name="name">visit.category.form</field>
+			<field name="model">visit.category</field>
+			<field name="arch" type="xml">
+				<form string="Visitor Category">
+					<sheet>
+						<h1>Visitor Category</h1>
+						<group>
+							<field name="name"/>
+							<field name="cat_code"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="view_visitor_category_tree" model="ir.ui.view">
+			<field name="name">visit.category.tree</field>
+			<field name="model">visit.category</field>
+			<field name="arch" type="xml">
+				<tree string="Visit category Tree">
+					<field name="name" />
+					<field name="cat_code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_visitor_category_search" model="ir.ui.view">
+			<field name="name">visit.category.search</field>
+			<field name="model">visit.category</field>
+			<field name="arch" type="xml">
+				<search string="Visit Category search">
+					<field name="name" />
+					<field name="cat_code" />
+				</search>
+			</field>
+		</record>
+
+		
+		<record id="action_visit_category_view" model="ir.actions.act_window">
+            <field name="name">Visitor Category</field>
+            <field name="res_model">visit.category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_visitor_category_search"/>
+            <field name="view_id" ref="view_visitor_category_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                   Visit Category
+                </p>
+            </field>
+        </record>
+</odoo>
+
+
